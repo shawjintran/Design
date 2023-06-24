@@ -7,7 +7,7 @@
       </el-col>
       <!-- 页面主题内容 -->
       <el-col :span="22">
-<!--        <h2>检索页面</h2>-->
+        <h2>文献检索</h2>
         <div class="content" style="color: white;">.</div>
         <el-row>
           <el-col :span="18">
