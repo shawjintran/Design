@@ -6,10 +6,10 @@
       </el-col>
       <!-- 页面主题内容 -->
       <el-col :span="22">
-        <h2>文件夹详情</h2>
+        <h2>{{this.docName}}</h2>
         <div class="content" style="color:white;">.</div>
         <!-- 多选文献后批量移动到其他文件夹 按钮 -->
-        <el-button type="primary" size="mini" @click="handleDelete">移动</el-button>
+        <el-button type="primary" plain @click="handleDelete">移动</el-button>
         <el-divider />
         <!-- elementUI 可选择表格 -->
         <el-table
@@ -78,7 +78,7 @@
           <template #default>
             <el-form :model="editData">
               <el-form-item label="文件夹">
-                <el-select v-model="editData.newDocId" placeholder="请选择">
+                <el-select v-model="tempId" placeholder="请选择">
                   <el-option
                     v-for="item in docData"
                     :key="item.docId"
@@ -119,6 +119,7 @@ export default {
       // 从file.vue页面传递过来的参数
       docId: '',
       userId: '3',
+      docName: '文件夹详情',
       // 表格数据
       tableData: [
       ],
@@ -139,7 +140,8 @@ export default {
         pdfId: '',
         pdfTitle: '',
         newDocId: ''
-      }
+      },
+      tempId: -1
 
     }
   },
@@ -147,6 +149,7 @@ export default {
     // 接收file.vue页面传输过来的参数
     this.docId = this.$route.query.docId
     this.userId = this.$route.query.userId
+    this.docName = this.$route.query.docName
     // 测试 浏览器控制台打印file.vue传递过来的参数
     console.log('测试')
     console.log(this.docId)
@@ -195,6 +198,7 @@ export default {
       // 将点击的行的数据赋值给editData
       this.editData.index = index
       this.editData.docId = row.docId
+      this.tempId = row.docId
       this.editData.pdfId = row.pdfId
       this.editData.pdfTitle = row.pdfTitle
       // 将弹窗显示
@@ -205,6 +209,9 @@ export default {
       console.log('编辑提交')
       console.log(this.editData)
       console.log(this.userId)
+      // eslint-disable-next-line eqeqeq
+      if (this.tempId != this.editData.docId)
+        this.editData.newDocId = this.tempId
       // 使用axios post 从后端api编辑一行数据 使用query传参
       const url = 'http://192.168.43.61:8081/file/update'
       axios({
@@ -225,7 +232,9 @@ export default {
         // 将弹窗隐藏
         this.showEditDialog = false
         // 将修改后的数据赋值给tableData
-        this.tableData[this.editData.index].pdfTitle = this.editData.pdfTitle
+        // eslint-disable-next-line no-undef
+        this.getdata()
+        // this.tableData[this.editData.index].pdfTitle = this.editData.pdfTitle
       }).catch(err => {
         console.log('失败')
         console.log(err)

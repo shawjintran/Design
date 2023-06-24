@@ -2,15 +2,15 @@
   <div class="chart">
     <el-row>
       <el-col :span="24">
-        <el-card class="box-card" style="background-color: #fafafa">
-          <!-- <el-radio-group v-model="radio" @change="initChart">
+                <el-card class="box-card" style="background-color: #fafafa">
+        <!-- <el-radio-group v-model="radio" @change="initChart">
             <el-radio-button label="1">柱状图</el-radio-button>
             <el-radio-button label="2">折线图</el-radio-button>
             <el-radio-button label="3">饼图</el-radio-button>
           </el-radio-group> -->
-          <span style="color: #0093d5;font-weight: bolder;font-size: 16px">您的文献数据统计分析图如下</span>
-          <div id="main" style="width: 100%; height: 670px;"></div>
-        </el-card>
+        <span style="color: #0093d5;font-weight: bolder;font-size: 16px">您的文献数据统计分析图如下</span>
+        <div id="main" style="width: 100%; height: 670px;" />
+                </el-card>
       </el-col>
     </el-row>
   </div>
@@ -33,7 +33,7 @@ export default {
   methods: {
     initChart() {
       var chartDom = document.getElementById('main')
-      var myChart = echarts.init(chartDom, 'dark')
+      var myChart = echarts.init(chartDom, null)
       var option
 
       const colors = [
@@ -313,6 +313,15 @@ export default {
       option = {
         backgroundColor: bgColor,
         color: colors,
+        dataZoom: [{
+          type: 'slider', //1平移 缩放
+          show: true
+          // throttle: '50', //设置触发视图刷新的频率。单位为毫秒（ms）。
+          // minValueSpan: 6, //用于限制窗口大小的最小值,在类目轴上可以设置为 5 表示 5 个类目
+          // start: 1, //数据窗口范围的起始百分比 范围是：0 ~ 100。表示 0% ~ 100%。
+          // end: 50, //数据窗口范围的结束百分比。范围是：0 ~ 100。
+          // zoomLock: true, //如果设置为 true 则锁定选择区域的大小，也就是说，只能平移，不能缩放。
+        }],
         series: [
           {
             type: 'sunburst',

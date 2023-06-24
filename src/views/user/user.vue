@@ -13,31 +13,40 @@
           <!--          <div class="content" style="color:white;">.</div>-->
           <!-- 个人信息 -->
           <el-row class="clock">
-            <!--            <el-col :span="1"><div><p style="color:white;">.</p></div></el-col>-->
-            <el-col :span="1" :xs="1"><div><p style="color:white;">.</p></div></el-col>
-            <el-col :span="5" :xs="4">
-              <div class="user-avatar">
-                <el-avatar :size="150" :src="require('@/icons/svg/logo.png')" />
-              </div>
+            <el-row>
+              <!--            <el-col :span="1"><div><p style="color:white;">.</p></div></el-col>-->
+              <el-col :span="1" :xs="1"><div><p style="color:white;">.</p></div></el-col>
+              <el-col :span="5" :xs="4">
+                <div class="user-avatar">
+                  <el-avatar :size="150" :src="require('@/icons/svg/logo.png')" />
+                </div>
+              </el-col>
+              <el-col :span="1" :xs="8"><div><p style="color:white;">.</p></div></el-col>
+              <el-col :span="15" :xs="7">
+                <div class="zhan" style="height: 10px;"><p style="color:white;">.</p></div>
+                <div class="user-details"  >
+                  <div class="user-id">用户ID: {{ userInfo.userId }}</div><br>
+                  <!-- <div class="user-id">用户名: {{ userInfo.username }}</div><br> -->
+                  <div class="user-phone">手机号: {{ userInfo.userPhone }}</div><br>
+                  <div class="user-points"> 积  分  : {{ userInfo.userPoints }}</div><br>
+                  <div class="user-points"> 容  量  : {{ userInfo.userCapacity }}</div>
+                </div>
+                <div class="zhan" style="height: 10px;"><p style="color:white;">.</p></div>
+                <!-- 购买积分按钮 点击后跳转到购买页面buy.vue -->
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="7" :xs="10"><div><p style="color:white;">.</p></div></el-col>
+              <el-col :span="2" :xs="6">
+              <el-button  size="mini">
+                <router-link to="/buy/buy">购买积分</router-link>
+              </el-button>
             </el-col>
-            <el-col :span="1" :xs="8"><div><p style="color:white;">.</p></div></el-col>
-            <el-col :span="15" :xs="7">
-              <div class="zhan" style="height: 10px;"><p style="color:white;">.</p></div>
-              <div class="user-details"  >
-                <div class="user-id">用户ID: {{ userInfo.userId }}</div><br>
-                <!-- <div class="user-id">用户名: {{ userInfo.username }}</div><br> -->
-                <div class="user-phone">手机号: {{ userInfo.userPhone }}</div><br>
-                <div class="user-points"> 积  分  : {{ userInfo.userPoints }}</div><br>
-                <div class="user-points"> 容  量  : {{ userInfo.userCapacity }}</div>
-              </div>
-              <div class="zhan" style="height: 10px;"><p style="color:white;">.</p></div>
-              <!-- 购买积分按钮 点击后跳转到购买页面buy.vue -->
-              <div style="">
-                <el-button type="">
-                  <router-link to="/buy/buy">购买积分</router-link>
+              <el-col :span="2" :xs="4">
+                <el-button  size="mini">
+                  <router-link to="/buy/buy">退出登录</router-link>
                 </el-button>
-              </div>
-            </el-col>
+              </el-col></el-row>
           </el-row>
         </el-col>
 

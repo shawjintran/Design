@@ -7,7 +7,7 @@
       </el-col>
       <!-- 页面主题内容 -->
       <el-col :span="22">
-        <h2>上传分析</h2>
+        <h2> </h2>
         <div class="content">
           <!-- 上传 https://jsonplaceholder.typicode.com/posts/-->
           <!-- 点击上传后，将文件上传到服务器，服务器返回文件名，再将文件名pdfTitle和userId传回后端，后端返回pdfId,再将pdfId和userId返回后端 -->
