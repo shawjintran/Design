@@ -44,7 +44,7 @@
             </el-col>
               <el-col :span="2" :xs="4">
                 <el-button  size="mini">
-                  <router-link to="/buy/buy">退出登录</router-link>
+                  <router-link to="/login">退出登录</router-link>
                 </el-button>
               </el-col></el-row>
           </el-row>

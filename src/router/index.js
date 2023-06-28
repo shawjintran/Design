@@ -40,7 +40,7 @@ export const constantRoutes = [
       path: 'search',
       name: '首页',
       component: () => import('@/views/search/search'),
-      meta: { title: '医疗文献检索系统', icon: '' },
+      meta: { title: '文献搜索', icon: '' },
       hidden: true
     }]
   },
@@ -51,9 +51,9 @@ export const constantRoutes = [
     children: [
       {
         path: 'search',
-        name: '搜索文献',
+        name: '文献搜索',
         component: () => import('@/views/search/search'),
-        meta: { title: '搜索文献', icon: 'search' }
+        meta: { title: '文献搜索', icon: 'search' }
       }
     ]
   },
@@ -64,9 +64,22 @@ export const constantRoutes = [
     children: [
       {
         path: 'upload',
-        name: '上传文档',
+        name: '文献上传',
         component: () => import('@/views/upload/upload'),
-        meta: { title: '上传文献', icon: 'upload' }
+        meta: { title: '文献上传', icon: 'upload' }
+      }
+    ]
+  },
+  {
+    path: '/choose',
+    component: Layout,
+    children: [
+      {
+        path: 'choose',
+        name: '文献管理',
+        component: () => import('@/views/choose/choose'),
+        meta: { title: '文献管理', icon: 'upload' },
+        hidden: true
       }
     ]
   },
@@ -77,7 +90,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'file',
-        name: '归档',
+        name: '文献归档',
         component: () => import('@/views/file/file'),
         meta: { title: '文献归档', icon: 'file' }
       }
@@ -89,7 +102,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'chart',
-        name: '分析',
+        name: '文献分析',
         component: () => import('@/views/chart/chart'),
         meta: { title: '文献分析', icon: 'chart' }
       }
@@ -121,9 +134,9 @@ export const constantRoutes = [
     children: [
       {
         path: 'filedetail',
-        name: '文件夹详情',
+        name: '当前文件夹',
         component: () => import('@/views/filedetail/filedetail'),
-        meta: { title: '文件夹详情', icon: 'file' },
+        meta: { title: '当前文件夹', icon: 'file' },
         hidden: true
       }
     ]
@@ -134,9 +147,9 @@ export const constantRoutes = [
     children: [
       {
         path: 'pdf',
-        name: 'pdf详情',
+        name: '查看文献',
         component: () => import('@/views/pdf/pdf'),
-        meta: { title: 'pdf详情', icon: 'file' },
+        meta: { title: '查看文献', icon: 'file' },
         hidden: true
       }
     ]
@@ -147,9 +160,9 @@ export const constantRoutes = [
     children: [
       {
         path: 'user',
-        name: '用户详情',
+        name: '个人中心',
         component: () => import('@/views/user/user'),
-        meta: { title: '用户详情', icon: 'user' },
+        meta: { title: '个人中心', icon: 'user' },
         hidden: true
       }
     ]
@@ -160,9 +173,9 @@ export const constantRoutes = [
     children: [
       {
         path: 'buy',
-        name: '购买积分',
+        name: '积分购买',
         component: () => import('@/views/buy/buy'),
-        meta: { title: '购买积分', icon: 'user' },
+        meta: { title: '积分购买', icon: 'user' },
         hidden: true
       }
     ]
@@ -173,6 +186,7 @@ export const constantRoutes = [
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
+  mode: 'hash', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })

@@ -42,24 +42,6 @@
             @click="handleDelete"
           >识别分析</el-button>
           <el-divider />
-          <!-- <el-upload
-            class="upload-demo"
-            action="http://192.168.43.61:8081/file/temp"
-            accept=".pdf"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :before-remove="beforeRemove"
-            :on-error="handleAvatarError"
-            :on-success="handleAvatarSuccess"
-            multiple
-            :limit="50"
-            :on-exceed="handleExceed"
-            :file-list="fileList"
-          >
-            <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">可批量上传PDF文件(限50个)</div>
-          </el-upload>
-          <el-divider /> -->
 
           <el-divider style="background-color:white; border-style: dashed" />
 
@@ -109,15 +91,6 @@
               </template>
             </el-table-column>
           </el-table>
-          <!-- <div v-for="(items,index) in this.files" :key="index">
-            <div>
-
-              <span class="title">{{items.pdfTitle}}</span>
-              <el-tag
-                effect="plain">
-                {{ items.pdfTitle}}
-              </el-tag>
-            </div> -->
           <el-divider />
         </div>
       </el-col>

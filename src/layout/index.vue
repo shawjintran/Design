@@ -1,9 +1,10 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
-    <sidebar v-if="device!='mobile'" class="sidebar-container" />
+<!--    <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />-->
+<!--    <sidebar v-if="device!='mobile'" class="sidebar-container" />-->
     <div class="main-container">
-      <div  :class="{'fixed-header':fixedHeader}">
+      <div
+        :class="{'fixed-header':fixedHeader}">
         <navbar />
       </div>
       <app-main />
@@ -11,17 +12,17 @@
         <van-tabbar  v-model="active">
           <van-tabbar-item icon="search" @click="search">搜索文献</van-tabbar-item>
           <van-tabbar-item icon="upgrade" @click="upload">上传文献</van-tabbar-item>
-          <van-tabbar-item icon="apps-o" @click="file">文献归档</van-tabbar-item>
+          <van-tabbar-item icon="apps-o" @click="file">文献管理</van-tabbar-item>
           <van-tabbar-item icon="user-o" @click="user">个人中心</van-tabbar-item>
         </van-tabbar>
       </div>
-      <el-footer v-if="device!='mobile'">
-        <el-row type="flex" justify="center">
-          <el-link href="https://beian.miit.gov.cn/" target="_blank">蜀ICP备2022029000号-1</el-link>
-          <span style="color: #606266; padding-left: 50px; font-size: 14px ">@2022-2023 Someone
-        </span>
-        </el-row>
-      </el-footer>
+<!--      <el-footer v-if="device!='mobile'">-->
+<!--        <el-row type="flex" justify="center">-->
+<!--          <el-link href="https://beian.miit.gov.cn/" target="_blank">蜀ICP备2022029000号-1</el-link>-->
+<!--          <span style="color: #606266; padding-left: 50px; font-size: 14px ">@2022-2023 Someone-->
+<!--        </span>-->
+<!--        </el-row>-->
+<!--      </el-footer>-->
     </div>
   </div>
 </template>
@@ -80,7 +81,7 @@ export default {
     },
     // 跳转文献归档
     file() {
-      this.$router.push({ path: '/file/file' })
+      this.$router.push({ path: '/choose/choose' })
     },
     // 跳转文献归档
     user() {
