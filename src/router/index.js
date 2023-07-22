@@ -51,9 +51,9 @@ export const constantRoutes = [
     children: [
       {
         path: 'search',
-        name: '搜索文献',
+        name: '文献检索',
         component: () => import('@/views/search/search'),
-        meta: { title: '搜索文献', icon: 'search' }
+        meta: { title: '文献检索', icon: 'search' }
       }
     ]
   },
@@ -64,9 +64,9 @@ export const constantRoutes = [
     children: [
       {
         path: 'upload',
-        name: '上传文档',
+        name: '文献上传',
         component: () => import('@/views/upload/upload'),
-        meta: { title: '上传文献', icon: 'upload' }
+        meta: { title: '文献上传', icon: 'upload' }
       }
     ]
   },
@@ -136,7 +136,7 @@ export const constantRoutes = [
         path: 'pdf',
         name: 'pdf详情',
         component: () => import('@/views/pdf/pdf'),
-        meta: { title: 'pdf详情', icon: 'file' },
+        meta: { title: '文献详情', icon: 'file' },
         hidden: true
       }
     ]
@@ -160,9 +160,9 @@ export const constantRoutes = [
     children: [
       {
         path: 'buy',
-        name: '购买积分',
+        name: '积分购买',
         component: () => import('@/views/buy/buy'),
-        meta: { title: '购买积分', icon: 'user' },
+        meta: { title: '积分购买', icon: 'user' },
         hidden: true
       }
     ]

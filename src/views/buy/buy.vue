@@ -7,44 +7,10 @@
         </el-col>
         <!-- 页面主题内容 -->
         <el-col :span="22">
-          <h2>购买积分</h2>
+          <h2>积分购买</h2>
           <el-divider />
           <span>请点击商品进行购买</span>
           <div class="content" style="color:white;">.</div>
-          <!-- el-table 分页显示bizId,bizPrice,bizPoint,bizStatus 每页显示数量size和总数total从后端获取 然后将后端传回的数据分页显示在表格中 -->
-<!--          <el-table-->
-<!--            :data="bizList"-->
-<!--            style="width: 100%"-->
-<!--            highlight-current-row-->
-<!--            @row-click="handleRowClick"-->
-<!--          >-->
-<!--            <el-table-column-->
-<!--              prop="bizPrice"-->
-<!--              label="商品价格"-->
-<!--            />-->
-<!--            <el-table-column-->
-<!--              prop="bizPoint"-->
-<!--              label="商品积分"-->
-<!--            />-->
-<!--            &lt;!&ndash; 当商品状态为1时，el-tag显示在售 &ndash;&gt;-->
-<!--            <el-table-column-->
-<!--              prop="bizStatus"-->
-<!--              label="商品状态"-->
-<!--            >-->
-<!--              <template slot-scope="scope">-->
-<!--                <el-tag v-if="scope.row.bizStatus === 1" type="success">在售</el-tag>-->
-<!--              </template>-->
-<!--            </el-table-column>-->
-<!--          </el-table>-->
-<!--          <el-pagination-->
-<!--            :current-page="currentPage"-->
-<!--            :page-sizes="[5,10,15]"-->
-<!--            :page-size="pageSize"-->
-<!--            layout="total, sizes, prev, pager, next, jumper"-->
-<!--            :total="total"-->
-<!--            @size-change="handleSizeChange"-->
-<!--            @current-change="handleCurrentChange"-->
-<!--          />-->
           <div v-for="(page, index) of pages" :key="index" >
             <el-col :span="6" v-for="(item, innerindex) of page" :key="item.bizId" style="align-items: center">
               <el-card :body-style="{ padding: '0px', height:'30%'}" shadow="hover" style="border-color: #dfdfdf ;width: 90%;height: 90%; margin-bottom: 15px;background-color: #e0f0fb"
@@ -97,18 +63,6 @@
               </span>
             </template>
           </el-dialog>
-
-<!--          <el-dialog-->
-<!--            title="支付订单"-->
-<!--            :visible.sync="orderVisible"-->
-<!--            width="20%"-->
-<!--            style="align-items: center;text-align: center"-->
-<!--          >-->
-<!--            <img :src="bizImg" alt="" style="text-align: center">-->
-<!--            <span slot="footer" class="dialog-footer">-->
-<!--              <el-button  @click="orderVisible = false">支 付 取 消</el-button>-->
-<!--            </span>-->
-<!--          </el-dialog>-->
 
         </el-col>
       </el-row>

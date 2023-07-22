@@ -193,7 +193,7 @@ export default {
       console.log(this.pdfTitle)
       console.log('成功返回文件名')
       // 将文件名pdfTitle和userId传回后端，后端返回pdfId
-      axios.post('http://192.168.43.61:8081/file/upload',
+      axios.post('http://192.168.43.61:8081/file/upload/',
         { params: {
           pdfTitle: this.pdfTitle,
           userId: this.userId
@@ -204,21 +204,21 @@ export default {
           console.log(this.pdfId)
           console.log('成功返回pdfId')
           // 将pdfId和userId返回后端
-          axios.post('http://192.168.43.61:8081/file/analyze/structure'
-            , {
-              pdfId: this.pdfId,
-              userId: this.userId
-            }).then(
-            (res) => {
-              console.log(res.data)
-              console.log('成功返回pdfId和userId')
-            }
-          ).catch(
-            (err) => {
-              console.log(err)
-              console.log('失败返回pdfId和userId')
-            }
-          )
+          // axios.post('http://192.168.43.61:8081/file/analyze/structure'
+          //   , {
+          //     pdfId: this.pdfId,
+          //     userId: this.userId
+          //   }).then(
+          //   (res) => {
+          //     console.log(res.data)
+          //     console.log('成功返回pdfId和userId')
+          //   }
+          // ).catch(
+          //   (err) => {
+          //     console.log(err)
+          //     console.log('失败返回pdfId和userId')
+          //   }
+          // )
         })
       // 上传成功后，弹出提示 上传成功
       this.$message({
@@ -255,8 +255,8 @@ export default {
     handleDelete() {
       this.isDisabled = true
       this.$message({
-        message: '正在识别中，请稍后',
-        type: 'warning'
+        message: '后台将进行识别中，请等待5-10分钟',
+        type: 'success'
       })
       this.fileList = []
       this.fetchSortFiles(this.userId, 1)
