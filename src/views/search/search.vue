@@ -7,13 +7,17 @@
       </el-col>
       <!-- 页面主题内容 -->
       <el-col :span="22">
-<!--        <h2>检索页面</h2>-->
+        <h2>文献检索</h2>
         <div class="content" style="color: white;">.</div>
         <el-row>
-          <el-col :span="18">
-            <el-input v-model="searchText" placeholder="请输入搜索内容" /></el-col>
-          <el-col :span="4" offset="1">
-            <el-button type="primary" @keyup.enter="enterSearch()" @click="search()">搜索</el-button></el-col>
+          <el-col :span="14"  >
+            <el-input v-model="searchText" placeholder="请输入搜索内容，或者需要AI推荐的关键词" /></el-col>
+          <el-col :span="2" offset="1">
+            <el-button type="primary" @keyup.enter="enterSearch()" @click="search()">搜索</el-button>
+          </el-col>
+          <el-col :span="2" offset="3">
+            <el-button type="primary" @keyup.enter="enterSearch()" @click="germinate()">推荐</el-button>
+          </el-col>
         </el-row>
         <el-divider />
         <template v-if="tableData.length > 0">
@@ -120,6 +124,19 @@ export default {
       })
       console.log('搜索' + this.searchText)
       console.log(url + 'url')
+    },
+    germinate(){
+      const searchString = this.searchText
+      const url = 'http://192.168.43.61:8081/chatGpt/ask/' + searchString
+      axios.get(url).then(response => {
+        // 处理搜索结果
+        this.searchText = response.data
+        console.log(this.searchText)
+        // 返回分页信息 total
+      }).catch(error => {
+        // 处理错误
+        console.log(error)
+      })
     },
     // 搜索框回车事件
     enterSearch() {
