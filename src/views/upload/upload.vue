@@ -177,7 +177,7 @@ export default {
           console.log(res.data)
           console.log(this.pdfId)
           console.log('成功返回pdfId')
-          this.fetchSortFiles(this.userId, 1)
+          // this.fetchSortFiles(this.userId, 1)
           // 将pdfId和userId返回后端
           // axios.post('http://192.168.43.61:8081/file/analyze/structure'
           //   , {
