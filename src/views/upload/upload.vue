@@ -7,14 +7,13 @@
       </el-col>
       <!-- 页面主题内容 -->
       <el-col :span="22">
-        <h2>文献上传</h2>
+        <h2> </h2>
         <div class="content">
           <!-- 上传 https://jsonplaceholder.typicode.com/posts/-->
           <!-- 点击上传后，将文件上传到服务器，服务器返回文件名，再将文件名pdfTitle和userId传回后端，后端返回pdfId,再将pdfId和userId返回后端 -->
           <el-upload
             class="upload-demo"
             action="http://192.168.43.61:8081/file/temp"
-            accept=".pdf"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :before-remove="beforeRemove"
@@ -51,6 +50,7 @@
           <el-table
             :data="files"
             style="width: 100%"
+            empty-text='请联网后重试'
           >
             <el-table-column
               prop="pdfTitle"
@@ -166,16 +166,18 @@ export default {
       console.log(this.pdfTitle)
       console.log('成功返回文件名')
       // 将文件名pdfTitle和userId传回后端，后端返回pdfId
-      axios.post('http://192.168.43.61:8081/file/upload/',
-        { params: {
+      axios.post('http://192.168.43.61:8081/file/upload/', null,{
+          params: {
           pdfTitle: this.pdfTitle,
           userId: this.userId
-        }}).then(
+        }}
+      ).then(
         (res) => {
           this.pdfId = res.data
           console.log(res.data)
           console.log(this.pdfId)
           console.log('成功返回pdfId')
+          this.fetchSortFiles(this.userId, 1)
           // 将pdfId和userId返回后端
           // axios.post('http://192.168.43.61:8081/file/analyze/structure'
           //   , {
@@ -228,7 +230,7 @@ export default {
     handleDelete() {
       this.isDisabled = true
       this.$message({
-        message: '后台将进行识别中，请等待5-10分钟',
+        message: '后台将进行识别中，请耐心等待',
         type: 'success'
       })
       this.fileList = []
