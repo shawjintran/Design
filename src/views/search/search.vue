@@ -34,6 +34,7 @@
             background
             layout="prev, pager, next"
             :total="this.total"
+            :page-size="this.pageSize"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             style="text-align: center"
@@ -69,7 +70,7 @@ export default {
     return {
       searchText: '',
       tableData: [], // 表格数据
-      currentPage: 0, // 当前页
+      currentPage: 1, // 当前页
       pageSize: 5, // 每页显示条数
       total: 20, // 总条数
       showAddressColumn: false
@@ -108,16 +109,14 @@ export default {
       const searchType = 1
       const url = 'http://192.168.43.61:8081/search/' + searchString + '/' + pageNo + '/' + pageSize + '/' + userId + '/' + docId + '/' + searchType
 
-      axios.get(url, {
-        params: {
-          searchString: this.searchText
-        }
-      }).then(response => {
+      axios.get(url, null
+      ).then(response => {
         // 处理搜索结果
-        this.tableData = response.data.data
+        this.tableData = response.data.data.list
+        this.total = response.data.data.count
         console.log(this.tableData)
         // 返回分页信息 total
-        this.total = 20
+        // this.total = 20
       }).catch(error => {
         // 处理错误
         console.log(error)

@@ -39,7 +39,7 @@
           <el-dialog
             title="支付订单"
             :visible.sync="orderVisible"
-            width="50%"
+            width="70%"
           >
             <template slot="title">
               <span>支付订单</span>
@@ -55,7 +55,9 @@
           </el-dialog>
           <el-dialog
             title="创建订单"
-            :visible.sync="dialogVisible">
+            :visible.sync="dialogVisible"
+            width="70%"
+          >
             <template >
               <div>即将生成订单，请确认是否需要购买</div>
             </template>

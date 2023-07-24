@@ -60,6 +60,7 @@
         <el-dialog
           title="新建文件夹"
           :visible.sync="outerVisible"
+          width="70%"
         >
           <template #default>
             <el-form>
@@ -79,6 +80,7 @@
         <el-dialog
           title="添加文件夹"
           :visible.sync="showAddDialog"
+          width="70%"
         >
           <template #default>
             <el-form :model="editData">
@@ -97,6 +99,7 @@
         <el-dialog
           title="编辑文件夹"
           :visible.sync="showEditDialog"
+          width="70%"
         >
           <template #default>
             <el-form :model="editData">

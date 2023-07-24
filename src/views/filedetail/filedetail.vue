@@ -71,6 +71,8 @@
           title="编辑数据"
           :visible.sync="showEditDialog"
           :get-doc-data="getDocData"
+          width="80%"
+
         >
           <template #header>
             <span>编辑数据</span>
@@ -97,6 +99,9 @@
               <el-form-item label="文献名">
                 <el-input v-model="editData.pdfTitle" />
               </el-form-item>
+              <el-form-item label="文献标签">
+                <el-input v-model="pdfTag" />
+              </el-form-item>
             </el-form>
           </template>
           <template #footer>
@@ -120,6 +125,7 @@ export default {
       docId: '',
       userId: '3',
       docName: '文件夹详情',
+      pdfTag: '疾病研究.病因学研究',
       // 表格数据
       tableData: [
       ],
