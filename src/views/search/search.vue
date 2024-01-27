@@ -107,7 +107,8 @@ export default {
       const userId = 3
       const docId = 0
       const searchType = 1
-      const url = 'http://192.168.43.61:8081/search/' + searchString + '/' + pageNo + '/' + pageSize + '/' + userId + '/' + docId + '/' + searchType
+      // const url = 'http://192.168.43.61:8081/search/' + searchString + '/' + pageNo + '/' + pageSize + '/' + userId + '/' + docId + '/' + searchType
+      const url = 'http://localhost:8081/search/' + searchString + '/' + pageNo + '/' + pageSize + '/' + userId + '/' + docId + '/' + searchType
 
       axios.get(url, null).then(response => {
         // 处理搜索结果
@@ -125,7 +126,8 @@ export default {
     },
     germinate(){
       const searchString = this.searchText
-      const url = 'http://192.168.43.61:8081/chatGpt/ask/' + searchString
+      // const url = 'http://192.168.43.61:8081/chatGpt/ask/' + searchString
+      const url = 'http://localhost:8081/chatGpt/ask/' + searchString
       axios.get(url).then(response => {
         // 处理搜索结果
         this.searchText = response.data

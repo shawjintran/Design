@@ -103,6 +103,18 @@ export const constantRoutes = [
     hidden: true
   }, */
   {
+    path: '/photo',
+    component: Layout,
+    children: [
+      {
+        path: 'photo',
+        name: '拍照上传',
+        component: () => import('@/views/photo/takephoto'),
+        meta: { title: '拍照上传', icon: 'search' }
+      }
+    ]
+  },
+  {
     path: '/details',
     component: Layout,
     children: [

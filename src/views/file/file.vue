@@ -84,6 +84,9 @@
               <el-form-item label="文件名">
                 <el-input v-model="editData.name" />
               </el-form-item>
+              <el-form-item label="共享">
+                <el-input v-model="editData.auth" />
+              </el-form-item>
             </el-form>
           </template>
           <template #footer>
@@ -143,7 +146,8 @@ export default {
     getTableData() {
       // 使用aioxs获取数据
       const userId = 3
-      const url = 'http://192.168.43.61:8081/doc/search/' + userId
+      // const url = 'http://192.168.43.61:8081/doc/search/' + userId
+      const url = 'http://localhost:8081/doc/search/' + userId
       axios.get(url).then(res => {
         this.tableData = res.data.data.data
         console.log('成功' + this.tableData)
@@ -163,7 +167,8 @@ export default {
       console.log(index, row)
       const userId = 3
       const docId = row.docId
-      const url = 'http://192.168.43.61:8081/doc/delete/' + userId + '/' + docId
+      // const url = 'http://192.168.43.61:8081/doc/delete/' + userId + '/' + docId
+      const url = 'http://localhost:8081/doc/delete/' + userId + '/' + docId
       axios.delete(url).then(res => {
         console.log('成功' + res.data.data)
         console.log(res.data.mes)
@@ -197,7 +202,8 @@ export default {
       // 隐藏编辑对话框
       this.showEditDialog = false
       //  将编辑成功的数据使用aioxs的put方法发送params方法传参给后端 传参为docName,uesrId,docId docId为后端传回tableData中的docId并且是点击编辑按钮时传入的row.docId
-      const url = 'http://192.168.43.61:8081/doc/update'
+      // const url = 'http://192.168.43.61:8081/doc/update'
+      const url = 'http://localhost:8081/doc/update'
       const userId = 3
       // 获取点击编辑按钮时传入的row.docId
       console.log('edit')
@@ -226,7 +232,8 @@ export default {
       // 隐藏编辑对话框
       this.showAddDialog = false
       //  将编辑成功的数据使用aioxs的put方法发送params方法传参给后端 传参为docName,uesrId,docId docId为后端传回tableData中的docId并且是点击编辑按钮时传入的row.docId
-      const url = 'http://192.168.43.61:8081/doc/add'
+      // const url = 'http://192.168.43.61:8081/doc/add'
+      const url = 'http://localhost:8081/doc/add'
       const userId = 3
       // 获取点击编辑按钮时传入的row.docId
       axios.post(url, null, {
