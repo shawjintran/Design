@@ -13,6 +13,7 @@
         <el-table
           :data="tableData"
           style="width: 100%"
+          @row-click="hrow"
         >
           <el-table-column
             prop="name"
@@ -37,9 +38,23 @@
             width="90"
           />
           <el-table-column
-            label=""
+            prop="auth"
+            align="center"
+            label="共享权限"
+            width="120"
+          >
+            <template slot-scope="scope">
+              <el-tag v-if ="scope.row.auth =='1'" type="danger" size="mini" effect="plain">
+              </el-tag>
+              <el-tag v-else type="info" size="mini" effect="plain">
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="操作"
             align="right"
             padding-right="30"
+            fixed="right"
           >
             <template slot-scope="scope">
               <el-dropdown trigger="click" placement="bottom-start">
@@ -62,7 +77,7 @@
         >
           <template #default>
             <el-form>
-              <span>本次创建文件夹需要花费10积分,是否要新建文件夹</span>
+              <span>本次创建文件夹需要花费10积分</span>
             </el-form>
           </template>
           <template #footer>
@@ -165,6 +180,7 @@ export default {
     // 使用axios从后端api删除一行
     handleDelete(index, row) {
       console.log(index, row)
+      console.log(row)
       const userId = 3
       const docId = row.docId
       // const url = 'http://192.168.43.61:8081/doc/delete/' + userId + '/' + docId
@@ -254,15 +270,23 @@ export default {
         type: 'success'
       })
     },
+    hrow(row, col, event) {
+      // this.handleDetail('', row)
+      console.log(col)
+      // eslint-disable-next-line eqeqeq
+      if (col.label != '操作') { this.handleDetail('', row) }
+    },
     // 点击详情按钮跳转到filedetail.vue页面
     handleDetail(index, row) {
-      console.log(index, row)
+      // console.log(index)
+      console.log(row)
       this.$router.push({
         path: '/filedetail/filedetail',
         query: {
           docId: row.docId,
           userId: 3,
-          docName: row.name
+          docName: row.name,
+          auth:row.auth
         }
       })
     }

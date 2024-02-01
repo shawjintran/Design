@@ -25,11 +25,11 @@
               <el-col :span="15" :xs="7">
                 <div class="zhan" style="height: 10px;"><p style="color:white;">.</p></div>
                 <div class="user-details"  >
-                  <div class="user-id">用户ID: {{ userInfo.userId }}</div><br>
+                  <div class="user-id">用户姓名: {{ userInfo.userName }}</div><br>
                   <!-- <div class="user-id">用户名: {{ userInfo.username }}</div><br> -->
                   <div class="user-phone">手机号: {{ userInfo.userPhone }}</div><br>
                   <div class="user-points"> 积  分  : {{ userInfo.userPoints }}</div><br>
-                  <div class="user-points"> 容  量  : {{ userInfo.userCapacity }}</div>
+<!--                  <div class="user-points"> 容  量  : {{ userInfo.userCapacity }}</div>-->
                 </div>
                 <div class="zhan" style="height: 10px;"><p style="color:white;">.</p></div>
                 <!-- 购买积分按钮 点击后跳转到购买页面buy.vue -->
@@ -62,10 +62,10 @@ export default {
   data() {
     return {
       userInfo: {
-        username: '用户12542',
+        userName: '',
         userId: '',
         userPhone: '',
-        userPoints: ''
+        userPoints: '',
       }
       // dialogVisible: false
     }
@@ -77,7 +77,7 @@ export default {
     // 使用axios 连接后端api，获取用户信息 /user/echo/{userId}
     getUserInfo() {
       const userId = 3
-      const url = 'http://192.168.43.61:8081/user/echo/' + userId
+      const url = 'http://localhost:8081/user/echo/' + userId
       axios.get(url).then(res => {
         this.userInfo = res.data.data
       })

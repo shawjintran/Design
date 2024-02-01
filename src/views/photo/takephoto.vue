@@ -3,6 +3,7 @@
     <video v-if="thisVideo!=null" id="videoCamera" :width="videoWidth" :height="videoHeight" autoplay></video>
     <el-empty v-else description="未获取摄像头权限"></el-empty>
     <canvas id="canvasCamera" style="display: none" :width="videoWidth" :height="videoHeight"></canvas>
+
     <div>
       <el-row :gutter="15">
         <el-col :span="7" :offset="3">

@@ -7,7 +7,15 @@
       <!-- 页面主题内容 -->
       <el-col :span="22">
         <h2>{{this.docName}}</h2>
-        <div class="content" style="color:white;">.</div>
+<!--        <div class="content" style="color:white;">.</div>-->
+        <div v-if="this.$route.query.auth ==1" class="userList">
+<!--          文件夹群内共享人-->
+          <el-avatar
+            v-for="user in docUsers"
+            :key="user.userId"
+          >{{user.userName}}</el-avatar>
+<!--          Todo： 颜色变化 悬浮提示 -->
+        </div>
         <!-- 多选文献后批量移动到其他文件夹 按钮 -->
         <el-button type="primary" plain @click="handleDelete">移动</el-button>
         <el-divider />
@@ -18,6 +26,7 @@
           style="width: 100%"
           :height="tableHeight"
           @selection-change="handleSelectionChange"
+          @row-click="rowclick"
         >
           <!-- 表格第一列为docId -->
           <el-table-column
@@ -37,7 +46,7 @@
             width="80"
           />
           <el-table-column
-            label=""
+            label="操作"
             align="right"
           >
             <template slot-scope="scope">
@@ -113,6 +122,7 @@
 
 <script>
 import axios from 'axios'
+import docApi from '@/views/filedetail/doc'
 export default {
   data() {
     return {
@@ -141,8 +151,8 @@ export default {
         pdfTitle: '',
         newDocId: ''
       },
-      tempId: -1
-
+      tempId: -1,
+      docUsers: ''
     }
   },
   mounted() {
@@ -156,15 +166,22 @@ export default {
     console.log(this.userId)
     // 页面加载时获取数据
     this.getdata()
-    this.getDocData()
-    console.log(this.docData)
+    // this.getDocData()
+    console.log(this.$route.query.auth)
+    if (this.$route.query.auth ==1)
+    {
+      console.log(this)
+      this.getDocUsers();
+    }
+    // console.log(this.docData)
   },
   methods: {
     // 使用使用axios从后端api获取文件夹里面的文献信息 /file/search/{page}/{size}
     getdata() {
       const page = this.currentPage
       const size = this.pageSize
-      const url = 'http://192.168.43.61:8081/file/search/' + page + '/' + size
+      // const url = 'http://192.168.43.61:8081/file/search/' + page + '/' + size
+      const url = 'http://localhost:8081/file/search/' + page + '/' + size
       console.log(url)
       // 使用axios从后端api获取数据 get请求 params传参数
       axios.get(url, {
@@ -190,6 +207,17 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
+    rowclick(row,col,event){
+      console.log(row)
+      if (col.label!='操作') {
+        this.$router.push({
+          path: '/pdf/pdf',
+          query: {
+            pdfId: row.pdfId
+          }
+        })
+      }
+    },
     // 编辑 使用axios post从后端api编辑一行数据 使用query传参,在点完编辑按钮后弹出窗口进行编辑
     handleEdit(index, row) {
       console.log('编辑')
@@ -213,7 +241,8 @@ export default {
       if (this.tempId != this.editData.docId)
         this.editData.newDocId = this.tempId
       // 使用axios post 从后端api编辑一行数据 使用query传参
-      const url = 'http://192.168.43.61:8081/file/update'
+      // const url = 'http://192.168.43.61:8081/file/update'
+      const url = 'http://localhost:8081/file/update'
       axios({
         method: 'post',
         url: url,
@@ -232,7 +261,6 @@ export default {
         // 将弹窗隐藏
         this.showEditDialog = false
         // 将修改后的数据赋值给tableData
-        // eslint-disable-next-line no-undef
         this.getdata()
         // this.tableData[this.editData.index].pdfTitle = this.editData.pdfTitle
       }).catch(err => {
@@ -248,7 +276,8 @@ export default {
     // 使用axios 从后端获取文件夹数据
     getDocData() {
       const userId = 3
-      const url = 'http://192.168.43.61:8081/doc/search/' + userId
+      const url = 'http://localhost:8081/doc/search/' + userId
+      // const url = 'http://192.168.43.61:8081/doc/search/' + userId
       console.log(url)
       axios.get(url).then(res => {
         // 将获取到的数据赋值给docData
@@ -269,13 +298,25 @@ export default {
     handleCurrentChange(page) {
       this.currentPage = page
       this.getdata()
+    },
+    getDocUsers() {
+      docApi.getDocUsers(this.$route.query.docId)
+      .then(response => {
+        console.info(response.data)
+        this.docUsers=response.data
+      })
     }
-
-  }
+  },
 }
 </script>
 <style>
 .el-icon-caret-bottom{
   padding-right: 30px;
+}
+.userList {
+  width: 100%;
+  height: 40px; /* 设置高度，可以根据需要调整 */
+  overflow-y: scroll; /* 允许纵向滚动 */
+  overflow-x: hidden; /* 隐藏横向滚动条 */
 }
 </style>
