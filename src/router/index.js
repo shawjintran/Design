@@ -40,7 +40,7 @@ export const constantRoutes = [
       path: 'search',
       name: '首页',
       component: () => import('@/views/search/search'),
-      meta: { title: '医疗文献检索系统', icon: '' },
+      meta: { title: '文献检索系统', icon: '' },
       hidden: true
     }]
   },

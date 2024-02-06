@@ -8,12 +8,13 @@
       <!-- 页面主题内容 -->
       <el-col :span="22">
         <h2>文献上传</h2>
+<!--        Todo：DOI文献解析-->
         <div class="content">
           <!-- 上传 https://jsonplaceholder.typicode.com/posts/-->
           <!-- 点击上传后，将文件上传到服务器，服务器返回文件名，再将文件名pdfTitle和userId传回后端，后端返回pdfId,再将pdfId和userId返回后端 -->
           <el-upload
             class="upload-demo"
-            action="http://192.168.43.61:8081/file/temp"
+            action="http://localhost:8081/file/temp"
             accept=".pdf"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
@@ -193,7 +194,7 @@ export default {
       console.log(this.pdfTitle)
       console.log('成功返回文件名')
       // 将文件名pdfTitle和userId传回后端，后端返回pdfId
-      axios.post('http://192.168.43.61:8081/file/upload/',null,
+      axios.post('http://localhost:8081/file/upload/',null,
         { params: {
           pdfTitle: this.pdfTitle,
           userId: this.userId

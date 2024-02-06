@@ -10,14 +10,22 @@
         <h2>文献检索</h2>
         <div class="content" style="color: white;">.</div>
         <el-row>
-          <el-col :span="14"  >
-            <el-input v-model="searchText" placeholder="请输入搜索内容，或者需要AI推荐的关键词" /></el-col>
+          <el-col :span="14" :xs="13-1" >
+            <el-input v-model="searchText" placeholder="请输入搜索内容，或者需要推荐的关键词" />
+          </el-col>
           <el-col :span="2" offset="1">
             <el-button type="primary" @keyup.enter="enterSearch()" @click="search()">搜索</el-button>
           </el-col>
-          <el-col :span="2" offset="1">
-            <el-button type="primary" @keyup.enter="enterSearch()" @click="germinate()">推荐</el-button>
+          <!--          <el-col :span="2" offset="1">-->
+          <!--            <el-button type="primary" @keyup.enter="enterSearch()" @click="germinate()">推荐</el-button>-->
+          <!--          </el-col>-->
+          <el-col :span="2" offset="1" :xs="{span:3-1,offset:3}" >
+            <!--            Todo: 图片相似检索 -->
+            <el-button type="primary"  @click="takephoto()" >拍照检索</el-button>
           </el-col>
+        </el-row>
+        <el-row>
+
         </el-row>
         <el-divider />
         <template v-if="tableData.length > 0">
@@ -65,6 +73,7 @@
 </template>
 <script>
 import axios from 'axios'
+import 'element-ui/lib/theme-chalk/display.css'
 export default {
   data() {
     return {

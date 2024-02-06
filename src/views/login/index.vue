@@ -5,7 +5,7 @@
       <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
         <div class="title-container">
           <img src="@/icons/svg/logo.png" alt="logo" class="loginlogo">
-          <span class="titleh1">医 寻</span>
+          <span class="titleh1">文献</span>
           <!-- <h3 class="title">登录界面</h3> -->
         </div>
         <el-form-item prop="username">

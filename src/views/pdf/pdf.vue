@@ -1,5 +1,7 @@
 <template>
   <!-- 后端传入多张图片连接，用列表显示图片 -->
+<!--  Todo：PDF下载-->
+<!--  Todo：返回按钮-->
   <ul>
     <li v-for="item_img in imageList" :key="item_img.imageId">
       <img class="demo-image" :src="item_img" alt="image">
@@ -33,7 +35,7 @@ export default {
       const userId = 3
       // const pdfId = this.pdfId
       const pdfId = 3
-      const url = 'http://192.168.43.61:8081/file/view2/' + userId + '/' + pdfId
+      const url = 'http://localhost:8081/file/view2/' + userId + '/' + pdfId
       axios.get(url).then(res => {
         this.imageList = res.data.data
         console.log(res.data)

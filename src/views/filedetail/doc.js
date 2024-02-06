@@ -34,11 +34,27 @@ export default {
   },
   getDocUsers(docId){
     return request({
-      url: `${api_name}/docUsers`,
+      url: `group/docUsers`,
       method: 'get',
       params:{
         docId: docId
       }
+    })
+  },
+  getDownloadFile(fileId){
+    return request({
+      url: `file/download/${fileId}`,
+      method: 'get'
+    })
+  },
+  placefiles(fileIds,uId,newDocId){
+    return request({
+      url: `file/place/${uId}/${newDocId}`,
+      method: 'put',
+      // params:{
+      //   ids:fileIds
+      // },
+      data:fileIds
     })
   }
 }

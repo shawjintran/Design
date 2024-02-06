@@ -10,14 +10,23 @@
 <!--        <div class="content" style="color:white;">.</div>-->
         <div v-if="this.$route.query.auth ==1" class="userList">
 <!--          文件夹群内共享人-->
-          <el-avatar
-            v-for="user in docUsers"
-            :key="user.userId"
-          >{{user.userName}}</el-avatar>
-<!--          Todo： 颜色变化 悬浮提示 -->
+            <el-tooltip placement="top" v-for="user in docUsers"
+                        :key="user.userId" class="userAvatar">
+              <div slot="content">
+                {{user.userName}}<br/>
+                {{user.userRole===1?'创建者':''}}
+              </div>
+              <el-avatar
+                :style="{ backgroundColor: user.userRole === 1 ? '#ffa1a1' : '' }"
+              >{{user.userName}}
+              </el-avatar>
+            </el-tooltip>
         </div>
         <!-- 多选文献后批量移动到其他文件夹 按钮 -->
-        <el-button type="primary" plain @click="handleDelete">移动</el-button>
+        <el-button type="primary" plain @click="handleMultiMove">移动</el-button>
+        <el-button type="primary" plain @click="handleMultiDownload">下载</el-button>
+<!--        <el-button type="primary" plain @click="handleMove">导出</el-button>-->
+<!--        Todo：移动功能添加-->
         <el-divider />
         <!-- elementUI 可选择表格 -->
         <el-table
@@ -58,6 +67,7 @@
               >
                 <div>
                   <el-button type="text" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                  <el-button type="text" @click="handleDownload(scope.$index,scope.row)">下载</el-button>
                 </div>
                 <i slot="reference" class="el-icon-caret-bottom" />
               </el-popover>
@@ -79,7 +89,6 @@
         <el-dialog
           title="编辑数据"
           :visible.sync="showEditDialog"
-          :get-doc-data="getDocData"
         >
           <template #header>
             <span>编辑数据</span>
@@ -115,6 +124,42 @@
             </div>
           </template>
         </el-dialog>
+        <el-dialog
+          title="移动文件"
+          :visible.sync="showMoveDialog"
+        >
+          <template #header>
+            <span>移动文件</span>
+          </template>
+          <template #default>
+            <el-form :model="editData">
+              <el-form-item label="文件夹">
+                <el-select v-model="tempId" placeholder="请选择">
+                  <el-option
+                    v-for="item in docData"
+                    :key="item.docId"
+                    :label="item.name"
+                    :value="item.docId"
+                  />
+                </el-select>
+                <!-- 选择文件夹名后，将另一个输入框里的docId不变 -->
+                <el-input v-show="false" v-model="editData.docId" disabled />
+                <!-- 选择文件夹名后，将另一个输入框里的新选择的newDocId跟着变化 -->
+                <el-input v-show="false" v-model="editData.newDocId" disabled />
+              </el-form-item>
+              <el-form-item v-show="false" label="pdfIds">
+                <el-input v-model="movePdfIds" disabled />
+              </el-form-item>
+            </el-form>
+          </template>
+          <template #footer>
+            <div slot="footer" class="dialog-footer">
+              <el-button size="small" @click="showMoveDialog = false">取 消</el-button>
+              <el-button size="small" type="primary" @click="handleMoveSubmit">确 定</el-button>
+            </div>
+          </template>
+        </el-dialog>
+
       </el-col>
     </el-row>
   </div>
@@ -144,6 +189,8 @@ export default {
       // 编辑对话框是否显示
       showEditDialog: false,
       // 编辑对话框中的数据
+      showMoveDialog:false,
+      movePdfIds:[],
       editData: {
         index: 0,
         docId: '',
@@ -151,6 +198,7 @@ export default {
         pdfTitle: '',
         newDocId: ''
       },
+      docData:'',
       tempId: -1,
       docUsers: ''
     }
@@ -231,6 +279,7 @@ export default {
       this.editData.pdfTitle = row.pdfTitle
       // 将弹窗显示
       this.showEditDialog = true
+      this.getDocData()
     },
     // 编辑提交
     handleEditSubmit() {
@@ -275,6 +324,7 @@ export default {
     },
     // 使用axios 从后端获取文件夹数据
     getDocData() {
+      //Todo:获取有可写权限的文件夹
       const userId = 3
       const url = 'http://localhost:8081/doc/search/' + userId
       // const url = 'http://192.168.43.61:8081/doc/search/' + userId
@@ -305,6 +355,42 @@ export default {
         console.info(response.data)
         this.docUsers=response.data
       })
+    },
+    handleMultiDownload(){
+      if(this.multipleSelection.length<1)
+        return
+      for(var i = 0; i < this.multipleSelection.length; i++) {
+        console.log(this.multipleSelection[i]);
+        this.handleDownload('',this.multipleSelection[i])
+      }
+    },
+    handleDownload(index, row){
+      console.log(row)
+      var elemIF = document.createElement('iframe')
+      elemIF.src = 'http://localhost:8081/file/download/'+row.pdfId
+      elemIF.style.display = 'none'
+      document.body.appendChild(elemIF)
+      // docApi.getDownloadFile(row.pdfId)
+    },
+    handleMultiMove(){
+      if(this.multipleSelection.length<1)
+        return
+      this.tempId=this.multipleSelection[0].docId
+      this.editData.docId=this.tempId
+      for(var i = 0; i < this.multipleSelection.length; i++) {
+        // console.log(this.multipleSelection[i]);
+        this.movePdfIds.push(this.multipleSelection[i].pdfId)
+      }
+      this.showMoveDialog=true
+    },
+    handleMoveSubmit(){
+      console.log(this.movePdfIds)
+      console.log(this.editData.docId)
+      console.log(this.tempId)
+      if (this.tempId == this.editData.docId)
+        return
+      this.editData.newDocId = this.tempId
+      docApi.placefiles(this.movePdfIds,3,this.editData.newDocId)
     }
   },
 }
@@ -315,8 +401,13 @@ export default {
 }
 .userList {
   width: 100%;
-  height: 40px; /* 设置高度，可以根据需要调整 */
+  height: 55px; /* 设置高度，可以根据需要调整 */
   overflow-y: scroll; /* 允许纵向滚动 */
   overflow-x: hidden; /* 隐藏横向滚动条 */
+  padding:10px;
+}
+.userAvatar{
+  margin-right: 5px;
+  margin-bottom: 5px;
 }
 </style>

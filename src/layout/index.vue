@@ -3,7 +3,7 @@
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
     <sidebar v-if="device!='mobile'" class="sidebar-container" />
     <div class="main-container">
-      <div  :class="{'fixed-header':fixedHeader}">
+      <div v-if="device!='mobile'" :class="{'fixed-header':fixedHeader}">
         <navbar />
       </div>
       <app-main />
@@ -15,13 +15,13 @@
           <van-tabbar-item icon="user-o" @click="user">个人中心</van-tabbar-item>
         </van-tabbar>
       </div>
-      <el-footer v-if="device!='mobile'">
-        <el-row type="flex" justify="center">
-          <el-link href="https://beian.miit.gov.cn/" target="_blank">蜀ICP备2022029000号-1</el-link>
-          <span style="color: #606266; padding-left: 50px; font-size: 14px ">@2022-2023 Someone
-        </span>
-        </el-row>
-      </el-footer>
+<!--      <el-footer v-if="device!='mobile'">-->
+<!--        <el-row type="flex" justify="center">-->
+<!--          <el-link href="https://beian.miit.gov.cn/" target="_blank">蜀ICP备2022029000号-1</el-link>-->
+<!--          <span style="color: #606266; padding-left: 50px; font-size: 14px ">@2022-2023 Someone-->
+<!--        </span>-->
+<!--        </el-row>-->
+<!--      </el-footer>-->
     </div>
   </div>
 </template>
