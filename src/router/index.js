@@ -115,6 +115,18 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/group',
+    component: Layout,
+    children: [
+      {
+        path: 'group',
+        name: '文献共享',
+        component: () => import('@/views/group/group'),
+        meta: { title: '文献共享', icon: 'search' }
+      }
+    ]
+  },
+  {
     path: '/details',
     component: Layout,
     children: [

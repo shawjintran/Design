@@ -1,32 +1,75 @@
 <template>
-  <div class="camera_outer">
-    <video v-if="thisVideo!=null" id="videoCamera" :width="videoWidth" :height="videoHeight" autoplay></video>
-    <el-empty v-else description="未获取摄像头权限"></el-empty>
-    <canvas id="canvasCamera" style="display: none" :width="videoWidth" :height="videoHeight"></canvas>
+  <div class="camera_outer" >
 
-    <div>
-      <el-row :gutter="15">
-        <el-col :span="7" :offset="3">
-          <el-button @click="getCompetence()">打开摄像头</el-button>
-        </el-col>
-        <el-col :span="7" >
-          <el-button type="primary" @click="setImage()">拍摄</el-button>
-        </el-col >
-        <el-col :span="7" :pull="2">
-          <el-upload style="display: flex;align-items: center;" :headers="headers" :show-file-list="false"
-                     :on-success="handleAvatarSuccess" class="avatar-uploader" action="/admin/sys-file/upload">
-            <el-button type="primary">上传照片</el-button>
-          </el-upload>
+<!--    <el-empty id="empty" description="未获取摄像头权限">-->
+<!--      <el-button @click="getCompetence()">打开摄像头</el-button>-->
+<!--    </el-empty>-->
+    <el-row id="cam">
+      <video id="videoCamera" :width="videoWidth" :height="videoHeight" autoplay></video>
+      <canvas id="canvasCamera" style="display: none" :width="videoWidth" :height="videoHeight"></canvas>
+      <div>
+        <el-image v-if="this.imgSrc!=''"
+                  style="width: 400px; height: 400px"
+                  :src="this.imgSrc"
+                  :fit="contain">
+        </el-image>
+      </div>
+    </el-row>
+
+
+    <div id="btn">
+    <el-row :gutter="15">
+      <el-col :span="7" :offset="3">
+        <el-button @click="getCompetence()">打开摄像头</el-button>
+      </el-col>
+      <el-col :span="7" >
+        <el-button type="primary" @click="setImage()">拍摄</el-button>
+      </el-col >
+      <el-col :span="7" :pull="2">
+        <el-upload style="display: flex;align-items: center;" :headers="headers" :show-file-list="false"
+                   :on-success="handleAvatarSuccess" class="avatar-uploader" action="/admin/sys-file/upload">
+          <el-button type="primary">上传照片</el-button>
+        </el-upload>
+      </el-col>
+    </el-row>
+  </div>
+    <el-form :model="this.form" label-width="100px">
+      <el-row>
+        <el-col>
+
         </el-col>
       </el-row>
-    </div>
-    <div>
-      <el-image v-if="this.imgSrc!=''"
-        style="width: 400px; height: 400px"
-        :src="this.imgSrc"
-        :fit="contain">
-      </el-image>
-    </div>
+      <el-form-item label="文献名">
+        <el-input v-model="this.form.name"></el-input>
+      </el-form-item>
+      <el-form-item label="文献作者">
+        <el-input v-model="this.form.author"></el-input>
+      </el-form-item>
+
+      <el-form-item label="文献归属">
+        <el-select v-model="this.form.docId" placeholder="请选择文件夹">
+          <el-option
+            v-for="item in docData"
+            :key="item.docId"
+            :label="item.name"
+            :value="item.docId"
+          />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="文献图片">
+        <el-upload
+          class="upload-demo"
+          action="https://jsonplaceholder.typicode.com/posts/"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :file-list="fileList"
+          list-type="picture">
+          <el-button size="small" type="primary">点击上传</el-button>
+          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+        </el-upload>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 <script>
@@ -35,33 +78,44 @@ import store from '@/store'
 export default {
   data() {
     return {
+      filelist:[],
       videoWidth: 300,
       videoHeight: 300,
       imgSrc: '',
       thisCancas: null,
       thisContext: null,
       thisVideo: null,
+      isShow:false,
       headers: {
         Authorization: 'Bearer ' + store.getters.access_token
+      },
+      docData:[],
+      form:{
+        author:'',
+        docId:'',
+        name:'',
       }
     }
   },
-  mounted() {
-    this.getCompetence()
+  created() {
+    // this.getCompetence()
   },
   destroyed() {
     this.stopNavigator()
   },
   methods: {
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
     handleAvatarSuccess(res, file) {
       this.$emit('refreshDataList', res.data.url)
     },
     // 调用权限（打开摄像头功能）
     getCompetence() {
-      var _this = this
-      this.thisCancas = document.getElementById('canvasCamera')
-      this.thisContext = this.thisCancas.getContext('2d')
-      this.thisVideo = document.getElementById('videoCamera')
+      // console.log(this.thisVideo)
       // 旧版本浏览器可能根本不支持mediaDevices，我们首先设置一个空对象
       if (navigator.mediaDevices === undefined) {
         navigator.mediaDevices = {}
@@ -84,31 +138,40 @@ export default {
           })
         }
       }
+      this.isShow=true
+
+
+      this.thisCancas = document.getElementById('canvasCamera')
+      this.thisContext = this.thisCancas.getContext('2d')
+      this.thisVideo = document.getElementById('videoCamera')
+      console.log(this.thisVideo)
       var constraints = { audio: false, video: { width: this.videoWidth, height: this.videoHeight, transform: 'scaleX(-1)' } }
+      // var constraints = { audio: false, video: { width: this.videoWidth, height: this.videoHeight} }
       navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
         // 旧的浏览器可能没有srcObject
-        if ('srcObject' in _this.thisVideo) {
-          _this.thisVideo.srcObject = stream
+        // console.log(this.thisVideo)
+        if (this.thisVideo!=null && 'srcObject' in this.thisVideo) {
+          this.thisVideo.srcObject = stream
         } else {
           // 避免在新的浏览器中使用它，因为它正在被弃用。
-          _this.thisVideo.src = window.URL.createObjectURL(stream)
+          this.thisVideo.src = window.URL.createObjectURL(stream)
         }
-        _this.thisVideo.onloadedmetadata = function (e) {
-          _this.thisVideo.play()
+        this.thisVideo.onloadedmetadata = function (e) {
+          this.thisVideo.play()
         }
+        console.log(this.thisVideo)
       }).catch(err => {
         console.log(err)
-        alert("cannot check the camera")
+        // alert("cannot check the camera")
       })
     },
     //  绘制图片（拍照功能）
     setImage() {
-      var _this = this
       // 点击，canvas画图
-      _this.thisContext.drawImage(_this.thisVideo, 0, 0, _this.videoWidth, _this.videoHeight)
+      this.thisContext.drawImage(this.thisVideo, 0, 0, this.videoWidth, this.videoHeight)
       // 获取图片base64链接
       var image = this.thisCancas.toDataURL('image/png')
-      _this.imgSrc = image
+      this.imgSrc = image
       const file = image
       const time = (new Date()).valueOf()
       const name = time + '.png'

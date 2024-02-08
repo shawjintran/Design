@@ -6,10 +6,13 @@
       </el-col>
       <!-- 页面主题内容 -->
       <el-col :span="22">
-        <h2>{{this.docName}}</h2>
-<!--        <div class="content" style="color:white;">.</div>-->
-        <div v-if="this.$route.query.auth ==1" class="userList">
+        <h2>
+          <i class="el-icon-folder-opened"></i>
+          {{this.docName}}</h2>
+        <div v-if="this.$route.query.auth ==1" >
+          <div>共享人：</div>
 <!--          文件夹群内共享人-->
+          <div class="userList">
             <el-tooltip placement="top" v-for="user in docUsers"
                         :key="user.userId" class="userAvatar">
               <div slot="content">
@@ -21,13 +24,16 @@
               >{{user.userName}}
               </el-avatar>
             </el-tooltip>
+          </div>
+        </div>
+        <div v-else>
+         <van-divider :style="{color: '#ffffff',borderColor: '#ffffff'}"></van-divider>
         </div>
         <!-- 多选文献后批量移动到其他文件夹 按钮 -->
         <el-button type="primary" plain @click="handleMultiMove">移动</el-button>
         <el-button type="primary" plain @click="handleMultiDownload">下载</el-button>
+        <van-divider :style="{color: '#ffffff',borderColor: '#ffffff'}"></van-divider>
 <!--        <el-button type="primary" plain @click="handleMove">导出</el-button>-->
-<!--        Todo：移动功能添加-->
-        <el-divider />
         <!-- elementUI 可选择表格 -->
         <el-table
           ref="multipleTable"
@@ -405,6 +411,7 @@ export default {
   overflow-y: scroll; /* 允许纵向滚动 */
   overflow-x: hidden; /* 隐藏横向滚动条 */
   padding:10px;
+  margin-bottom: 10px ;
 }
 .userAvatar{
   margin-right: 5px;
