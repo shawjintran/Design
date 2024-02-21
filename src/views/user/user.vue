@@ -52,7 +52,7 @@
               <el-divider />
               <el-row>
                 <el-button  type="text">
-                  <router-link to="/buy/buy">退出登录</router-link>
+                  <router-link to="/lphone">退出登录</router-link>
                 </el-button>
               </el-row>
               <el-divider />

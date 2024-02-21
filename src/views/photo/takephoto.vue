@@ -35,40 +35,52 @@
   </div>
     <el-form :model="this.form" label-width="100px">
       <el-row>
-        <el-col>
-
+        <el-col :span="13-1" :xs="33-13">
+          <el-form-item label="文献名" >
+            <el-input v-model="this.form.name"></el-input>
+          </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="文献名">
-        <el-input v-model="this.form.name"></el-input>
-      </el-form-item>
-      <el-form-item label="文献作者">
-        <el-input v-model="this.form.author"></el-input>
-      </el-form-item>
+      <el-row>
+        <el-col :span="13-1" :xs="33-13">
+          <el-form-item label="文献作者">
+            <el-input v-model="this.form.author"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="13-1" :xs="33-13">
+          <el-form-item label="文献归属">
+            <el-select v-model="this.form.docId" placeholder="请选择文件夹">
+              <el-option
+                v-for="item in docData"
+                :key="item.docId"
+                :label="item.name"
+                :value="item.docId"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="13-1" :xs="33-11">
+          <el-form-item label="文献图片">
+            <el-upload
+              class="upload-demo"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :file-list="fileList"
+              :auto-upload="false"
+              list-type="picture">
+              <el-button size="small" type="primary">点击上传</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb,文献图片顺序如上传顺序</div>
+            </el-upload>
+          </el-form-item>
+        </el-col>
+      </el-row>
 
-      <el-form-item label="文献归属">
-        <el-select v-model="this.form.docId" placeholder="请选择文件夹">
-          <el-option
-            v-for="item in docData"
-            :key="item.docId"
-            :label="item.name"
-            :value="item.docId"
-          />
-        </el-select>
-      </el-form-item>
 
-      <el-form-item label="文献图片">
-        <el-upload
-          class="upload-demo"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :file-list="fileList"
-          list-type="picture">
-          <el-button size="small" type="primary">点击上传</el-button>
-          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-        </el-upload>
-      </el-form-item>
     </el-form>
   </div>
 </template>

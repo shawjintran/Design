@@ -5,7 +5,7 @@
       <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
         <div class="title-container">
           <img src="@/icons/svg/logo.png" alt="logo" class="loginlogo">
-          <span class="titleh1">文献</span>
+          <span class="titleh1">文献系统</span>
           <!-- <h3 class="title">登录界面</h3> -->
         </div>
         <el-form-item prop="username">
@@ -43,13 +43,12 @@
           </span>
         </el-form-item>
         <a style="color: rgba(69,69,68,0.53); " href="/password_reset?loginWay=mobile">忘记密码？</a>
-        <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录/注册</el-button>
-        <label class="ant-checkbox-wrapper">
-          <span class="ant-checkbox">
-            <input type="checkbox" class="ant-checkbox-input" data-testid="protocolCheckBox" value="">
-            <span class="ant-checkbox-inner" /></span>
-          <span>   我已阅读并同意医寻<a href="https://www.yuque.com/terms" target="_blank"> 服务协议 </a>和<a href="https://app.nlark.com/mobile-app/pages/privacy-policy.html" target="_blank"> 隐私权政策 </a></span>
-        </label>
+        <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:10px;" @click.native.prevent="handleLogin">登录/注册</el-button>
+        <el-checkbox v-model="loginForm.checkbox">我已阅读并同意
+          <el-button type="text" href="https://www.yuque.com/terms" target="_blank"> 服务协议 </el-button>
+          和
+          <el-button type="text" href="https://app.nlark.com/mobile-app/pages/privacy-policy.html" target="_blank"> 隐私权政策 </el-button>
+        </el-checkbox>
 
 <!--        <div class="tips">-->
 <!--          <el-button type="mini" style="margin-right:50px;margin-left: 50px;">忘记密码</el-button>-->
@@ -244,7 +243,7 @@ a{
     position: relative;
     width: 520px;
     max-width: 100%;
-    padding: 70px 35px 35px 35px;
+    padding: 35px 35px 35px 35px;
     margin: 0 auto;
     overflow: hidden;
   }
@@ -281,9 +280,7 @@ a{
       left: 0;
       width: 70px;
       height: 70px;
-      margin: 0 auto;
-      margin-top: 0;
-      margin-left: 50px;
+      margin: 0 auto 0 50px;
       box-sizing: border-box;
       position: relative;
       overflow: hidden;

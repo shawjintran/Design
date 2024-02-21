@@ -11,6 +11,10 @@ export const constantRoutes = [
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
+  },{
+    path: '/lphone',
+    component: () => import('@/views/login/phone'),
+    hidden: true
   },
   {
     path: '/register',
@@ -67,6 +71,12 @@ export const constantRoutes = [
         name: '文献上传',
         component: () => import('@/views/upload/upload'),
         meta: { title: '文献上传', icon: 'upload' }
+      },
+      {
+        path: 'form',
+        name: '文献上传表单',
+        component: () => import('@/views/upload/uploadform'),
+        hidden: true
       }
     ]
   },
@@ -115,13 +125,13 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/group',
+    path: '/share',
     component: Layout,
     children: [
       {
-        path: 'group',
+        path: 'share',
         name: '文献共享',
-        component: () => import('@/views/group/group'),
+        component: () => import('@/views/share/share'),
         meta: { title: '文献共享', icon: 'search' }
       }
     ]

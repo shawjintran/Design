@@ -30,7 +30,9 @@
             <el-button size="small" type="primary" plain>上传文献</el-button>
             <div slot="tip" class="el-upload__tip">可批量上传PDF文件(限50个)</div>
           </el-upload>
-
+          <el-button type="primary" plain size="medium">
+            <router-link to="/upload/form">上传文献</router-link>
+          </el-button>
           <el-divider>
             <i class="el-icon-upload" />
           </el-divider>
@@ -40,9 +42,8 @@
             plain
             style="margin-top: 20px"
             :disabled="isDisabled"
-            @click="handleDelete"
+            @click="handleIdentify"
           >识别分析</el-button>
-          <el-divider />
           <!-- <el-upload
             class="upload-demo"
             action="http://192.168.43.61:8081/file/temp"
@@ -254,7 +255,8 @@ export default {
         } 个文件`
       )
     },
-    handleDelete() {
+    handleIdentify() {
+      console.log(this.fileList)
       this.isDisabled = true
       this.$message({
         message: '后台将进行识别中，请等待5-10分钟',
@@ -269,6 +271,9 @@ export default {
       //   })
       //   this.isDisabled = false
       // }, 4000)
+    },
+    handleUpload(){
+
     }
     // 点击上传后，将文件上传到服务器，服务器返回文件名,再将文件名pdfTitle和userId传回后端，后端返回pdfId,再将pdfId和userId返回后端
     /* getMessage() {
