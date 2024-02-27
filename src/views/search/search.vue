@@ -11,7 +11,7 @@
         <div class="content" style="color: white;">.</div>
         <el-row>
           <el-col :span="14" :xs="13-1" >
-            <el-input v-model="searchText" placeholder="请输入搜索内容，或者需要推荐的关键词" />
+            <el-input v-model="searchText" placeholder="请输入相关的搜索内容" />
           </el-col>
           <el-col :span="2" offset="1">
             <el-button type="primary" @keyup.enter="enterSearch()" @click="search()">搜索</el-button>
@@ -25,9 +25,18 @@
           </el-col>
         </el-row>
         <el-row>
-
+          <el-col :span="22">
+            <span style="font-size:15px;color:#5a5e66;vertical-align: bottom;margin-right: 5px">检索范围 : </span>
+            <el-radio-group v-model="searchRule" style="margin-top: 10px">
+              <el-radio :label="1">个人</el-radio>
+              <el-radio :label="2">共享</el-radio>
+              <el-radio :label="3">所有</el-radio>
+            </el-radio-group>
+          </el-col>
         </el-row>
-        <el-divider />
+        <el-divider>
+          <i class="el-icon-search"></i>
+        </el-divider>
         <template v-if="tableData.length > 0">
           <el-table :data="tableData" @row-click="handleRowClick">
             <el-table-column prop="title" label="文章标题" />
@@ -54,7 +63,6 @@
             <template slot="template">
               <div style="padding: 14px;">
                 <el-skeleton-item variant="p" style="width: 100%" />
-                <!--              eslint-disable-next-line vue/no-unused-vars -->
                 <div v-for=" n in 8" :key="n" style="margin:20px">
                   <div style="display: flex; align-items: center;justify-content: space-between;">
                     <el-skeleton-item variant="text" class="item" />
@@ -82,7 +90,8 @@ export default {
       currentPage: 1, // 当前页
       pageSize: 5, // 每页显示条数
       total: 20, // 总条数
-      showAddressColumn: false
+      showAddressColumn: false,
+      searchRule:1
     }
   },
   created() {

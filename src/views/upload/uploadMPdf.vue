@@ -1,0 +1,74 @@
+<template>
+  <div>
+    <div style="font-weight: bolder">1.文件命名</div>
+    为PDF文件命名，格式为 标题-作者<br>
+    示例:文献系统操作指南-xx<br>
+    请不要包含其他 ‘-’ 字符，避免解析不准<br>
+    <div style="font-weight: bolder">2.选择分组文件夹</div>
+    选择文件夹后，文献将上传到该文件夹中<br>
+    <el-select v-model="docId" placeholder="请选择文件夹">
+      <el-option
+        v-for="item in docData"
+        :key="item.docId"
+        :label="item.name"
+        :value="item.docId"
+      />
+    </el-select>
+    <div style="font-weight: bolder;margin-bottom:3px">3.上传文件</div>
+    <el-upload
+      ref="pdf"
+      drag
+      action="http://localhost:8081/file/temp"
+      accept=".pdf"
+      :on-preview="handlePreview"
+      :on-remove="pdfRemove"
+      :on-change="pdfChange"
+      :before-remove="pdfBefore"
+      :on-error="handleAvatarError"
+      :on-success="handleAvatarSuccess"
+      :on-exceed="handleExceed"
+      :file-list="pdfFiles"
+      multiple
+      :auto-upload="false"
+    >
+      <i class="el-icon-upload"></i>
+      <!--                    <el-button size="small" type="warning" plain>上传解析</el-button>-->
+      <div class="el-upload__text">上传PDF文件</div>
+      <!--                <el-button size="small" type="primary" plain>选择文献</el-button>-->
+      <!--                <div slot="tip" class="el-upload__tip">一条文献信息对应一个PDF文件</div>-->
+    </el-upload><br>
+    <el-button v-if="pdfFiles!=null&&pdfFiles.length>0" size="small" type="primary" plain @click="showFile">导入到服务器</el-button>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "uploadMPdf",
+  data(){
+    return{
+      pdfFiles:[],
+      docId:'',
+      docData:[],
+    }
+  },
+  methods:{
+    showFile(){
+      console.log(this.pdfFiles)
+    },
+    pdfChange(file,fileList){
+      this.pdfFiles=fileList
+    },
+    pdfRemove(file, fileList) {
+      // fileList.push(file);
+      this.pdfFiles=fileList
+    },
+    pdfBefore(file, fileList){
+      return
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

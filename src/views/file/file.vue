@@ -74,21 +74,16 @@
         </el-table>
         <!-- el-dialog嵌套对话框 点击"添加"按钮后弹出对话框提示“是否要新建文件夹”，点击确定后再弹出对话框对文件名进行编辑 -->
         <el-dialog
-          title="新建文件夹"
+          title="消耗积分"
           :visible.sync="outerVisible"
         >
           <template #default>
-            <el-form>
               <span>本次创建文件夹需要花费10积分</span>
-            </el-form>
           </template>
-          <template #footer>
-            <div slot="footer" class="dialog-footer">
-              <el-button @click="outerVisible = false">取消</el-button>
-              <el-button type="primary" @click="FirstDialog">确定</el-button>
-            </div>
-          </template>
-
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="outerVisible = false">取消</el-button>
+            <el-button type="primary" @click="FirstDialog">确定</el-button>
+          </div>
         </el-dialog>
 
         <!-- 编辑对话框  custom-class="mydialog"-->
@@ -303,9 +298,6 @@ svg{
   width: 30%;
   height: 30%;
   overflow: scroll;
-  input{
-
-  }
 }
 // 当鼠标移动到表格中的某一行时，才显示操作按钮
 .el-icon-arrow-down{

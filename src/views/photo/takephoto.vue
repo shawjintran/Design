@@ -5,13 +5,20 @@
 <!--      <el-button @click="getCompetence()">打开摄像头</el-button>-->
 <!--    </el-empty>-->
     <el-row id="cam">
-      <video id="videoCamera" :width="videoWidth" :height="videoHeight" autoplay></video>
-      <canvas id="canvasCamera" style="display: none" :width="videoWidth" :height="videoHeight"></canvas>
+      <el-col style="display:flex;justify-content: center">
+        <video id="videoCamera" :width="videoWidth" :height="videoHeight" autoplay></video>
+        <canvas id="canvasCamera" style="display: none" :width="videoWidth" :height="videoHeight"></canvas>
+      </el-col>
+
+
+    </el-row>
+    <el-row>
       <div>
-        <el-image v-if="this.imgSrc!=''"
-                  style="width: 400px; height: 400px"
-                  :src="this.imgSrc"
-                  :fit="contain">
+        <el-image
+          v-if="this.imgSrc!=''"
+          style="width: 100px; height: 100px"
+          :src="this.imgSrc"
+          :fit="contain">
         </el-image>
       </div>
     </el-row>
@@ -20,7 +27,7 @@
     <div id="btn">
     <el-row :gutter="15">
       <el-col :span="7" :offset="3">
-        <el-button @click="getCompetence()">打开摄像头</el-button>
+        <el-button @click="getCompetence()">打开相机</el-button>
       </el-col>
       <el-col :span="7" >
         <el-button type="primary" @click="setImage()">拍摄</el-button>
@@ -28,66 +35,27 @@
       <el-col :span="7" :pull="2">
         <el-upload style="display: flex;align-items: center;" :headers="headers" :show-file-list="false"
                    :on-success="handleAvatarSuccess" class="avatar-uploader" action="/admin/sys-file/upload">
-          <el-button type="primary">上传照片</el-button>
+          <el-button type="primary">上传</el-button>
         </el-upload>
       </el-col>
     </el-row>
   </div>
-    <el-form :model="this.form" label-width="100px">
-      <el-row>
-        <el-col :span="13-1" :xs="33-13">
-          <el-form-item label="文献名" >
-            <el-input v-model="this.form.name"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="13-1" :xs="33-13">
-          <el-form-item label="文献作者">
-            <el-input v-model="this.form.author"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="13-1" :xs="33-13">
-          <el-form-item label="文献归属">
-            <el-select v-model="this.form.docId" placeholder="请选择文件夹">
-              <el-option
-                v-for="item in docData"
-                :key="item.docId"
-                :label="item.name"
-                :value="item.docId"
-              />
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="13-1" :xs="33-11">
-          <el-form-item label="文献图片">
-            <el-upload
-              class="upload-demo"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :on-preview="handlePreview"
-              :on-remove="handleRemove"
-              :file-list="fileList"
-              :auto-upload="false"
-              list-type="picture">
-              <el-button size="small" type="primary">点击上传</el-button>
-              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb,文献图片顺序如上传顺序</div>
-            </el-upload>
-          </el-form-item>
-        </el-col>
-      </el-row>
-
-
-    </el-form>
   </div>
 </template>
 <script>
 import store from '@/store'
 // import { uploadImg } from '@/api/visitinfo'
 export default {
+  mounted() {
+    this.$EventBus.$on("close", (data) => {
+      console.log(data)
+      if (data==='1')
+        this.stopNavigator()
+    });
+  },
+  beforeDestroy() {
+    this.$EventBus.$off("close")
+  },
   data() {
     return {
       filelist:[],
@@ -127,7 +95,13 @@ export default {
     },
     // 调用权限（打开摄像头功能）
     getCompetence() {
-      // console.log(this.thisVideo)
+      var _this = this
+      console.log(_this.thisVideo)
+      this.thisCancas = document.getElementById('canvasCamera')
+      this.thisContext = this.thisCancas.getContext('2d')
+      this.thisVideo = document.getElementById('videoCamera')
+      console.log(this.thisVideo)
+      console.log(_this.thisVideo)
       // 旧版本浏览器可能根本不支持mediaDevices，我们首先设置一个空对象
       if (navigator.mediaDevices === undefined) {
         navigator.mediaDevices = {}
@@ -150,36 +124,39 @@ export default {
           })
         }
       }
-      this.isShow=true
-
-
-      this.thisCancas = document.getElementById('canvasCamera')
-      this.thisContext = this.thisCancas.getContext('2d')
-      this.thisVideo = document.getElementById('videoCamera')
+      console.log(_this.thisVideo)
       console.log(this.thisVideo)
+      console.log(this)
+      console.log('--')
       var constraints = { audio: false, video: { width: this.videoWidth, height: this.videoHeight, transform: 'scaleX(-1)' } }
-      // var constraints = { audio: false, video: { width: this.videoWidth, height: this.videoHeight} }
       navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
         // 旧的浏览器可能没有srcObject
-        // console.log(this.thisVideo)
-        if (this.thisVideo!=null && 'srcObject' in this.thisVideo) {
-          this.thisVideo.srcObject = stream
+        console.log(_this.thisVideo)
+        console.log(this)
+        if ('srcObject' in _this.thisVideo) {
+          _this.thisVideo.srcObject = stream
+          console.log(1)
         } else {
           // 避免在新的浏览器中使用它，因为它正在被弃用。
-          this.thisVideo.src = window.URL.createObjectURL(stream)
+          _this.thisVideo.src = window.URL.createObjectURL(stream)
         }
-        this.thisVideo.onloadedmetadata = function (e) {
-          this.thisVideo.play()
+        _this.thisVideo.onloadedmetadata = function (e) {
+          _this.thisVideo.play()
         }
-        console.log(this.thisVideo)
       }).catch(err => {
         console.log(err)
-        // alert("cannot check the camera")
+        alert("cannot check the camera")
       })
     },
     //  绘制图片（拍照功能）
     setImage() {
       // 点击，canvas画图
+      // this.thisContext.clearRect(0,0,this.videoWidth,this.videoHeight)
+      // this.thisContext.translate(this.videoWidth, 0);
+      // this.thisContext.scale(1,-1)
+      // this.thisContext.transform(1,0,0,0,0,0)
+      console.log(this.thisContext)
+      // this.thisContext.transform(-1)
       this.thisContext.drawImage(this.thisVideo, 0, 0, this.videoWidth, this.videoHeight)
       // 获取图片base64链接
       var image = this.thisCancas.toDataURL('image/png')
@@ -197,14 +174,14 @@ export default {
       // })
     },
     // base64图片转file的方法（base64图片, 设置生成file的文件名）
-    base64ToFile(base64, fileName) {
-      // 将base64按照 , 进行分割 将前缀  与后续内容分隔开
-      const data = base64.split(',')
+    base64ToFile(file, fileName) {
+      // 将file按照 , 进行分割 将前缀  与后续内容分隔开
+      const data = file.split(',')
       // 利用正则表达式 从前缀中获取图片的类型信息（image/png、image/jpeg、image/webp等）
       const type = data[0].match(/:(.*?);/)[1]
       // 从图片的类型信息中 获取具体的文件格式后缀（png、jpeg、webp）
       const suffix = type.split('/')[1]
-      // 使用atob()对base64数据进行解码  结果是一个文件数据流 以字符串的格式输出
+      // 使用atob()对file数据进行解码  结果是一个文件数据流 以字符串的格式输出
       const bstr = window.atob(data[1])
       // 获取解码结果字符串的长度
       let n = bstr.length
@@ -218,11 +195,12 @@ export default {
       }
       // 利用构造函数创建File文件对象
       // new File(bits, name, options)
-      const file = new File([u8arr], `${fileName}.${suffix}`, {
+      const picfile = new File([u8arr], `${fileName}.${suffix}`, {
         type: type
       })
+      console.log(picfile)
       // 将File文件对象返回给方法的调用者
-      return file
+      return picfile
     },
     // 关闭摄像头
     stopNavigator() {
@@ -242,10 +220,10 @@ export default {
   video,
   canvas,
   .tx_img {
-    -moz-transform: scaleX(-1);
-    -webkit-transform: scaleX(-1);
-    -o-transform: scaleX(-1);
-    transform: scaleX(-1);
+    //-moz-transform: scaleX(-1);
+    //-webkit-transform: scaleX(-1);
+    //-o-transform: scaleX(-1);
+    //transform: scaleX(-1);
   }
 
   .btn_camera {

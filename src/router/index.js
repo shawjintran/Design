@@ -7,13 +7,9 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 export const constantRoutes = [
-  {
+ {
     path: '/login',
-    component: () => import('@/views/login/index'),
-    hidden: true
-  },{
-    path: '/lphone',
-    component: () => import('@/views/login/phone'),
+    component: () => import('@/views/login/login'),
     hidden: true
   },
   {

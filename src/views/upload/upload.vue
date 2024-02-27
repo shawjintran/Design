@@ -12,38 +12,68 @@
         <div class="content">
           <!-- 上传 https://jsonplaceholder.typicode.com/posts/-->
           <!-- 点击上传后，将文件上传到服务器，服务器返回文件名，再将文件名pdfTitle和userId传回后端，后端返回pdfId,再将pdfId和userId返回后端 -->
-          <el-upload
-            class="upload-demo"
-            action="http://localhost:8081/file/temp"
-            accept=".pdf"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :before-remove="beforeRemove"
-            :on-error="handleAvatarError"
-            :on-success="handleAvatarSuccess"
-            :get-messages="getMessages"
-            multiple
-            :limit="50"
-            :on-exceed="handleExceed"
-            :file-list="fileList"
-          >
-            <el-button size="small" type="primary" plain>上传文献</el-button>
-            <div slot="tip" class="el-upload__tip">可批量上传PDF文件(限50个)</div>
-          </el-upload>
-          <el-button type="primary" plain size="medium">
-            <router-link to="/upload/form">上传文献</router-link>
-          </el-button>
+
+<!--          <el-upload-->
+<!--            class="upload-demo"-->
+<!--            action="http://localhost:8081/file/temp"-->
+<!--            accept=".pdf"-->
+<!--            :on-preview="handlePreview"-->
+<!--            :on-remove="handleRemove"-->
+<!--            :before-remove="beforeRemove"-->
+<!--            :on-error="handleAvatarError"-->
+<!--            :on-success="handleAvatarSuccess"-->
+<!--            :get-messages="getMessages"-->
+<!--            multiple-->
+<!--            :limit="50"-->
+<!--            :on-exceed="handleExceed"-->
+<!--            :file-list="fileList"-->
+<!--          >-->
+<!--            <el-button size="small" type="primary" plain>上传文献</el-button>-->
+<!--            <div slot="tip" class="el-upload__tip">可批量上传PDF文件(限50个)</div>-->
+<!--          </el-upload>-->
+<!--          <el-button type="primary" plain size="medium" @click="handleForm">-->
+<!--&lt;!&ndash;            <router-link to="/upload/form">上传文献</router-link>&ndash;&gt;-->
+<!--              上传文献-->
+<!--          </el-button>-->
+<!--          <el-button type="primary" plain size="medium" @click="handleRecent">-->
+<!--&lt;!&ndash;            <router-link to="/upload/form">上传文献</router-link>&ndash;&gt;-->
+<!--              bian-->
+<!--          </el-button>-->
+          <div class="coll">
+            <el-collapse>
+              <el-collapse-item>
+                <template slot="title">
+                  <i class="header-icon el-icon-info"></i><span style="opacity: 0">.</span>新增文献
+                </template>
+                <uploadform></uploadform>
+              </el-collapse-item>
+            </el-collapse>
+          </div>
+
+          <div class="coll">
+            <el-collapse>
+              <el-collapse-item>
+                <template slot="title">
+                  <i class="header-icon el-icon-info"></i><span style="opacity: 0">.</span>批量导入文献
+                </template>
+                <uploadmulti></uploadmulti>
+              </el-collapse-item>
+            </el-collapse>
+          </div>
+
           <el-divider>
             <i class="el-icon-upload" />
           </el-divider>
-          <el-button
-            type="primary"
-            size="small"
-            plain
-            style="margin-top: 20px"
-            :disabled="isDisabled"
-            @click="handleIdentify"
-          >识别分析</el-button>
+
+<!--          <el-button-->
+<!--            type="primary"-->
+<!--            size="small"-->
+<!--            plain-->
+<!--            style="margin-top: 20px"-->
+<!--            :disabled="isDisabled"-->
+<!--            @click="handleIdentify"-->
+<!--          >识别分析</el-button>-->
+
           <!-- <el-upload
             class="upload-demo"
             action="http://192.168.43.61:8081/file/temp"
@@ -63,54 +93,13 @@
           </el-upload>
           <el-divider /> -->
 
-          <el-divider style="background-color:white; border-style: dashed" />
-
+          <van-divider style="opacity: 0"/>
+          <recent></recent>
+<!--          <div>-->
+<!--            <component :is="this.show"></component>-->
+<!--          </div>-->
           <!-- “识别”按钮 点击后变成disabled样式持续3秒，并弹出提示：正在识别中，请稍后，在7秒之后弹出提示：识别已完成 -->
-          <div style="font-size:20px;font-weight: bolder;margin-bottom: 10px">最近上传文件</div>
-          <!-- 表格显示最近上传文件 展示pdfTitle pdfTitle-->
-          <el-table
-            :data="files"
-            style="width: 100%"
-          >
-            <el-table-column
-              prop="pdfTitle"
-              label="文件名"
-              min-width="160"
-              :show-overflow-tooltip="true"
-            />
-            <!-- 将状态栏靠在最后 -->
-            <el-table-column
-              prop="pdfStatus"
-              label="当前状态"
-              min-width="160"
-              align="right"
-            >
-              <!-- 当状态为1时 表示为“已完成”，状态为0时，表示“分析中”，状态为2时，表示出现异常 -->
-              <template slot-scope="scope">
-                <el-tag
-                  v-if="scope.row.pdfStatus === 1"
-                  effect="light"
-                  type="success"
-                >
-                  已完成
-                </el-tag>
-                <el-tag
-                  v-else-if="scope.row.pdfStatus === 0"
-                  effect="light"
-                  type="warning"
-                >
-                  分析中
-                </el-tag>
-                <el-tag
-                  v-else-if="scope.row.pdfStatus === 2"
-                  effect="light"
-                  type="danger"
-                >
-                  异常
-                </el-tag>
-              </template>
-            </el-table-column>
-          </el-table>
+
           <!-- <div v-for="(items,index) in this.files" :key="index">
             <div>
 
@@ -120,7 +109,7 @@
                 {{ items.pdfTitle}}
               </el-tag>
             </div> -->
-          <el-divider />
+          <van-divider style="opacity: 0"></van-divider>
         </div>
       </el-col>
     </el-row>
@@ -140,13 +129,21 @@
 </style>
 <script>
 import axios from 'axios'
-
 import sortfile from '@/api/sortfile'
+import uploadrecent from "@/views/upload/uploadrecent";
+import uploadform from "@/views/upload/uploadform";
+import uploadmulti from "@/views/upload/uploadmulti";
 export default {
+  components:{
+    'recent':uploadrecent,
+    'uploadform':uploadform,
+    'uploadmulti':uploadmulti
+  },
   data() {
     return {
       radio: '1',
       isCollapse: false,
+      show:"recent",
       activeIndex: '2',
       tableData: [
         {
@@ -319,3 +316,25 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.coll{
+  margin-top: 10px;
+  padding-top: 10px;
+  border-radius: 10px 10px 10px 10px;
+  background-color: #f0f3ff;
+  border-color: #f0f3ff;
+  box-shadow: 0px -10px 10px -10px rgba(0, 0, 0, 0.34);
+}
+::v-deep .el-collapse-item__header {
+  background-color: #f0f3ff;
+  font-size: 15px;
+  border-color: #f0f3ff;
+  font-weight: bold;
+  color: #3a9cc9;
+  margin-left: 5px;
+  margin-bottom: 10px;
+}
+::v-deep .el-collapse{
+  border-color:#f0f3ff;
+}
+</style>
