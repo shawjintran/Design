@@ -14,6 +14,7 @@
         :value="item.docId"
       />
     </el-select>
+    <el-cascader :props="props"></el-cascader>
     <div style="font-weight: bolder;margin-bottom:3px">3.上传文件</div>
     <el-upload
       ref="pdf"
@@ -42,13 +43,30 @@
 </template>
 
 <script>
+let id = 1
 export default {
   name: "uploadMPdf",
   data(){
-    return{
-      pdfFiles:[],
-      docId:'',
-      docData:[],
+    return {
+      pdfFiles: [],
+      docId: '',
+      docData: [],
+      props: {
+        lazy: true,
+        lazyLoad(node, resolve) {
+          const {level} = node;
+          setTimeout(() => {
+            const nodes = Array.from({length: level + 1})
+            .map(item => ({
+              value: ++id,
+              label: `选项${id}`,
+              leaf: level >= 2
+            }));
+            // 通过调用resolve将子节点数据返回，通知组件数据加载完成
+            resolve(nodes);
+          }, 1000);
+        },
+      }
     }
   },
   methods:{
