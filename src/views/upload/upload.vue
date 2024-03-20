@@ -43,7 +43,7 @@
             <el-collapse>
               <el-collapse-item>
                 <template slot="title">
-                  <i class="header-icon el-icon-info"></i><span style="opacity: 0">.</span>新增文献
+                  <i class="header-icon el-icon-info"></i>&nbsp新增文献
                 </template>
                 <uploadform></uploadform>
               </el-collapse-item>
@@ -54,7 +54,7 @@
             <el-collapse>
               <el-collapse-item>
                 <template slot="title">
-                  <i class="header-icon el-icon-info"></i><span style="opacity: 0">.</span>批量导入文献
+                  <i class="header-icon el-icon-info"></i>&nbsp批量导入文献
                 </template>
                 <uploadmulti></uploadmulti>
               </el-collapse-item>

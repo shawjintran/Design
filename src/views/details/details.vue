@@ -1,24 +1,28 @@
 <template>
   <div id="app">
     <el-row class="tac">
-      <el-col :span="1">
-        <div><p>.</p></div>
-      </el-col>
       <!-- 页面主题内容 -->
-      <el-col :span="22">
+      <el-col :offset="1" :span="22">
         <!-- <h2>详情</h2> -->
         <div class="content">
           <el-row>
             <el-col :span="24">
               <div>
                 <!-- 在线查看PDF -->
-                <el-link type="primary" @click="showPdf"><h1>{{ title }}.PDF</h1></el-link>
                 <br>
+                <span style="padding-right: 10px;color: #9498a1" @click="goBack">
+                  <i class="el-icon-arrow-left"> 返回 </i>
+                </span>
+                <br><br>
+                <div>
+                  <span style="font-size:35px;font-weight:bold">{{title}}</span>
+                </div>
                 <br>
                 <!-- 点击按钮跳转到pdf.vue页面 -->
                 <el-button type="primary" size="mini" @click="showPdfOL">在线查看</el-button>
                 <!-- 收藏按钮 -->
-                <el-button type="success" size="mini" @click="handleCollect">收藏</el-button>
+<!--                <el-button type="success" size="mini" @click="handleCollect">收藏</el-button>-->
+                <el-button type="success" size="mini" @click="handleCollect">下载</el-button>
 
                 <!-- 下载PDF -->
                 <!-- <el-link type="primary" :href="pdfLink" download target="_blank">
@@ -29,14 +33,98 @@
                 <p>创建时间: {{ createtime }}</p>
                 <!-- el-分割线 -->
                 <el-divider />
-                <div v-for="(items,index) in detaildata" :key="index">
-                  <p>页数为 {{ items.page }}</p>
-                  <el-text :style="{ color: textColor }">{{ items.estype }}</el-text>
-                  <p>
-                    <span v-html="highlightText(items.esvalue)" />
-                  </p>
-                  <el-divider />
-                </div>
+                <el-tabs v-model="activeType">
+                  <el-tab-pane label="正文"  name="text">
+                    <div v-for="(items,index) in details.text" :key="index">
+                      <p>页数 {{ items.page }}</p>
+                      <p>
+                        <span v-html="highlightText(items.esvalue)" />
+                      </p>
+                      <el-divider />
+                    </div>
+                  </el-tab-pane>
+                  <el-tab-pane label="页眉"  name="header" v-if="details.header!=null&&details.header.length>0">
+                    <div v-for="(items,index) in details.header" :key="index">
+                      <p>页数为 {{ items.page }}</p>
+                      <p>
+                        <span v-html="highlightText(items.esvalue)" />
+                      </p>
+                      <el-divider />
+                    </div>
+                  </el-tab-pane>
+                  <el-tab-pane label="页脚"  name="footer" v-if="details.footer!=null&&details.footer.length>0">
+                    <div v-for="(items,index) in details.footer" :key="index">
+                      <p>页数为 {{ items.page }}</p>
+                      <p>
+                        <span v-html="highlightText(items.esvalue)" />
+                      </p>
+                      <el-divider />
+                    </div>
+                  </el-tab-pane>
+                  <el-tab-pane label="标题"  name="title" v-if="details.title!=null&&details.title.length>0">
+                    <div v-for="(items,index) in details.title" :key="index">
+                      <p>页数为 {{ items.page }}</p>
+                      <p>
+                        <span v-html="highlightText(items.esvalue)" />
+                      </p>
+                      <el-divider />
+                    </div>
+                  </el-tab-pane>
+                  <el-tab-pane label="公式"  name="equation" v-if="details.equation!=null&&details.equation.length>0">
+                    <div v-for="(items,index) in details.equation" :key="index">
+                      <p>页数为 {{ items.page }}</p>
+                      <p>
+                        <span v-html="highlightText(items.esvalue)" />
+                      </p>
+                      <el-divider />
+                    </div>
+                  </el-tab-pane>
+                  <el-tab-pane label="引用"  name="reference" v-if="details.reference!=null&&details.reference.length>0">
+                    <div v-for="(items,index) in details.reference" :key="index">
+                      <p>页数为 {{ items.page }}</p>
+                      <p>
+                        <span v-html="highlightText(items.esvalue)" />
+                      </p>
+                      <el-divider />
+                    </div>
+                  </el-tab-pane>
+                  <el-tab-pane label="表格"  name="table" v-if="details.table!=null&&details.table.length>0">
+                    <div v-for="(items,index) in details.table" :key="index">
+                      <p>页数为 {{ items.page }}</p>
+                      <p>
+                        <span v-html="highlightText(items.esvalue)" />
+                      </p>
+                      <el-divider />
+                    </div>
+                  </el-tab-pane>
+                  <el-tab-pane label="图像"  name="figure" v-if="details.figure!=null&&details.figure.length>0">
+                    <div v-for="(items,index) in details.figure" :key="index">
+                      <p>页数为 {{ items.page }}</p>
+                      <p>
+                        <span v-html="highlightText(items.esvalue)" />
+                      </p>
+                      <el-divider />
+                    </div>
+                  </el-tab-pane>
+                  <el-tab-pane label="其他"  name="other" v-if="details.other!=null&&details.other.length>0">
+                    <div v-for="(items,index) in details.other" :key="index">
+                      <p>页数为 {{ items.page }}</p>
+                      <p>
+                        <span v-html="highlightText(items.esvalue)" />
+                      </p>
+                      <el-divider />
+                    </div>
+                  </el-tab-pane>
+                </el-tabs>
+<!--                <div v-for="(items,index) in detaildata" :key="index">-->
+<!--                  <p>页数为 {{ items.page }}</p>-->
+<!--                  <el-text :style="{ color: textColor }">{{ items.estype }}</el-text>-->
+<!--                  <p>-->
+<!--                    <span v-html="highlightText(items.esvalue)" />-->
+<!--                  </p>-->
+<!--                  <el-divider />-->
+<!--                </div>-->
+
                 <!-- <el-link type="primary" @click="showPdf">{{ $route.query.row.listOne }}.pdf</el-link> -->
               </div>
             </el-col>
@@ -57,9 +145,126 @@ export default {
       pdfPages: 0,
       score: 0,
       createtime: '',
-      detaildata: [], // 详情数据
+      detaildata: [
+        {
+          page:1,
+          estype:'图片',
+          esvalue:'你有这么告诉运转的机器加入中国'
+        },
+        {
+          page:1,
+          estype:'图片',
+          esvalue:'你有你是你的你的爹'
+        },{
+          page:1,
+          estype:'图片',
+          esvalue:'你有你是你的你的爹'
+        },{
+          page:1,
+          estype:'图片',
+          esvalue:'你有你是你的你的爹'
+        },{
+          page:1,
+          estype:'图片',
+          esvalue:'你有你是你的你的爹'
+        },{
+          page:1,
+          estype:'图片',
+          esvalue:'你有你是你的你的爹'
+        },{
+          page:1,
+          estype:'图片',
+          esvalue:'你有你是你的你的爹'
+        },{
+          page:1,
+          estype:'图片',
+          esvalue:'你有你是你的你的爹'
+        },{
+          page:1,
+          estype:'图片',
+          esvalue:'你有你是你的你的爹'
+        },{
+          page:1,
+          estype:'图片',
+          esvalue:'你有你是你的你的爹'
+        },{
+          page:1,
+          estype:'图片',
+          esvalue:'你有你是你的你的爹'
+        },{
+          page:1,
+          estype:'图片',
+          esvalue:'你有你是你的你的爹'
+        },{
+          page:1,
+          estype:'图片',
+          esvalue:'你有你是你的你的爹'
+        },{
+          page:1,
+          estype:'图片',
+          esvalue:'你有你是你的你的爹'
+        },{
+          page:1,
+          estype:'图片',
+          esvalue:'你有你是你的你的爹'
+        },{
+          page:1,
+          estype:'图片',
+          esvalue:'你有你是你的你的爹'
+        },{
+          page:1,
+          estype:'图片',
+          esvalue:'你有你是你的你的爹'
+        },{
+          page:1,
+          estype:'图片',
+          esvalue:'你有你是你的你的爹'
+        },{
+          page:1,
+          estype:'图片',
+          esvalue:'你有你是你的你的爹'
+        },{
+          page:1,
+          estype:'图片',
+          esvalue:'你有你是你的你的爹'
+        },{
+          page:1,
+          estype:'图片',
+          esvalue:'你有你是你的你的爹'
+        },{
+          page:1,
+          estype:'图片',
+          esvalue:'你有你是你的你的爹'
+        },{
+          page:1,
+          estype:'图片',
+          esvalue:'你有你是你的你的爹'
+        },{
+          page:1,
+          estype:'图片',
+          esvalue:'你有你是你的你的爹'
+        },
+      ], // 详情数据
+      activeType:'text',
+      details:{
+        text:[
+          {
+            page:1,
+            esvalue:'你有这么告诉运转的机器加入中国'
+          },
+        ],
+        header:[],
+        footer:[ ],
+        title:[ ],
+        figure:[],
+        table:[],
+        reference:[],
+        equation:[],
+        other:[],
+      },
       textColor: '#409EFF',
-      keyword: this.$route.query.searchString// 高亮关键字
+      keyword: '你'// 高亮关键字
+      // keyword: this.$route.query.searchString// 高亮关键字
       // pdfLink: 'http://example.com/myfile.pdf' // pdf下载链接
     }
   },
@@ -81,6 +286,7 @@ export default {
     console.log('keyword:' + this.keyword)
     this.getDetail()
     this.highlightText()
+    this.catalogType()
     /* this.$nextTick(() => {
       this.highlightText()
     }) */
@@ -88,6 +294,9 @@ export default {
 
   methods: {
     // 使用axios从后端api获取详情数据
+    goBack(){
+      this.$router.back()
+    },
     getDetail() {
       const pdfId = this.pdfId
       const searchString = this.searchString
@@ -112,6 +321,10 @@ export default {
       const highlightedText = text.replace(regex, `<em style="color: red;background-color: yellow; font-weight: bold; font-style: normal;">${keyword}</em>`)
       return highlightedText
     },
+    catalogType(){
+      if(this.details.text==null||this.details.text.length<1)
+        this.activeType='other'
+    },
     // 在线查看PDF
     showPdf() {
       // const pdfId = this.pdfId
@@ -121,10 +334,11 @@ export default {
     // 跳转到pdf.vue页面
     showPdfOL() {
       this.$router.push({
-        path: '/pdf/pdf',
-        query: {
+        name:"pdf",
+        params: {
           pdfId: this.pdfId,
-          searchString: this.searchString
+          searchString: this.searchString,
+          pdfTitle:this.title
         }
       })
     },

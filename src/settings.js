@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '医 寻',
+  title: '文献系统',
 
   /**
    * @type {boolean} true | false

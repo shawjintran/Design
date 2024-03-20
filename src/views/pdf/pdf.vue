@@ -2,11 +2,36 @@
   <!-- 后端传入多张图片连接，用列表显示图片 -->
 <!--  Todo：PDF下载-->
 <!--  Todo：返回按钮-->
-  <ul>
-    <li v-for="item_img in imageList" :key="item_img.imageId">
-      <img class="demo-image" :src="item_img" alt="image">
-    </li>
-  </ul>
+  <el-row>
+    <el-col :offset="1" :span="22">
+      <el-row>
+        <div style="padding-top: 10px;width: 100%;display: flex;align-items: baseline;justify-content: space-between">
+          <i class="el-icon-back" @click="goBack" style="font-size: 24px;"></i>
+          <el-tooltip placement="top">
+            <div slot="content">{{this.pdf.pdfTitle}}</div>
+            <span class="pdfname">
+              &nbsp{{this.pdf.pdfTitle}}
+            </span>
+          </el-tooltip>
+          <i class="el-icon-download" style="float:right;font-size: 20px;color: #97a8be"></i>
+        </div>
+      </el-row>
+      <el-row>
+        <van-divider style="opacity: 0"></van-divider>
+        <el-card>
+          <el-empty v-if="imageList==null||imageList.length<1" description="暂无图像">
+          </el-empty>
+          <ul v-else>
+            <li v-for="img in imageList" :key="img.imageId">
+              <img class="demo-image" :src="img" alt="image">
+            </li>
+          </ul>
+        </el-card>
+
+      </el-row>
+    </el-col>
+  </el-row>
+
 
 </template>
 
@@ -15,26 +40,33 @@ import axios from 'axios' // 引入axios
 export default {
   data() {
     return {
-      imageList: []
+      pdf:{
+        pdfId:0,
+        pdfTitle: '',
+      },
+      imageList: [],
     }
   },
   mounted() {
     // 接收details页面传输过来的参数
-    this.userId = this.$route.params.userId
-    this.pdfId = this.$route.params.pdfId
+    this.userId = 3
+    this.pdf.pdfId = this.$route.params.pdfId
+    this.pdf.pdfTitle = this.$route.params.pdfTitle
     // 测试 浏览器控制台打印details页面传递过来的参数
     console.log('测试')
-    console.log(this.userId)
-    console.log(this.pdfId)
+    console.log(this.pdf)
     // 页面加载时调用获取图片列表的方法
     this.getImageList()
   },
   methods: {
+    goBack(){
+      this.$router.back()
+    },
     // 通过axios获取图片列表
     getImageList() {
       const userId = 3
-      // const pdfId = this.pdfId
-      const pdfId = 3
+      const pdfId = this.pdf.pdfId
+      // const pdfId = 3
       const url = 'http://localhost:8081/file/view2/' + userId + '/' + pdfId
       axios.get(url).then(res => {
         this.imageList = res.data.data
@@ -58,5 +90,13 @@ ul {
   height: 100%;
   display: block;
   margin: 0 auto;
+}
+.pdfname{
+  display: inline-block;
+  max-width: 550px;
+  font-size: 24px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 </style>

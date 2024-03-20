@@ -6,12 +6,47 @@ Vue.use(Router)
 /* Layout */
 import Layout from '@/layout'
 
+/**
+ * Note: sub-menu only appear when route children.length >= 1
+ * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
+ *
+ * hidden: true                   if set true, item will not show in the sidebar(default is false)
+ * alwaysShow: true               if set true, will always show the root menu
+ *                                if not set alwaysShow, when item has more than one children route,
+ *                                it will becomes nested mode, otherwise not show the root menu
+ * redirect: noRedirect           if set noRedirect will no redirect in the breadcrumb
+ * name:'router-name'             the name is used by <keep-alive> (must set!!!)
+ * meta : {
+    roles: ['admin','editor']    control the page roles (you can set multiple roles)
+    title: 'title'               the name show in sidebar and breadcrumb (recommend set)
+    icon: 'svg-name'/'el-icon-x' the icon show in the sidebar
+    breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
+    activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
+  }
+ */
+
+/**
+ * constantRoutes
+ * a base page that does not have permission requirements
+ * all roles can be accessed
+ */
 export const constantRoutes = [
- {
+  {
     path: '/login',
+    // component: () => import('@/views/login/index'),
     component: () => import('@/views/login/login'),
     hidden: true
   },
+
+  {
+    path: '/404',
+    component: () => import('@/views/404'),
+    hidden: true
+  },
+
+  // 404 page must be placed at the end !!!
+  { path: '*', redirect: '/404', hidden: true },
+
   {
     path: '/register',
     component: Layout,
@@ -25,11 +60,6 @@ export const constantRoutes = [
         hidden: true
       }
     ]
-  },
-  {
-    path: '/404',
-    component: () => import('@/views/404'),
-    hidden: true
   },
 
   {
@@ -85,7 +115,20 @@ export const constantRoutes = [
         path: 'file',
         name: '归档',
         component: () => import('@/views/file/file'),
-        meta: { title: '文献归档', icon: 'file' }
+        meta: { title: '文献归档', icon: 'file' , keepAlive:true}
+      }
+    ]
+  },
+  {
+    path: '/order',
+    component: Layout,
+    children: [
+      {
+        path: 'order',
+        name: 'order',
+        component: () => import('@/views/order/order'),
+        meta: { title: '订单', icon: 'file' , keepAlive:true},
+        hidden: true
       }
     ]
   },
@@ -101,13 +144,6 @@ export const constantRoutes = [
       }
     ]
   },
-  /* {
-    path: '/filedetail/filedetail',
-    component: () => import('@/views/filedetail/filedetail'),
-    name: '文件夹详情',
-    meta: { title: '文件夹详情' },
-    hidden: true
-  }, */
   {
     path: '/photo',
     component: Layout,
@@ -116,7 +152,8 @@ export const constantRoutes = [
         path: 'photo',
         name: '拍照上传',
         component: () => import('@/views/photo/takephoto'),
-        meta: { title: '拍照上传', icon: 'search' }
+        meta: { title: '拍照上传', icon: 'search' },
+        hidden: true
       }
     ]
   },
@@ -128,7 +165,8 @@ export const constantRoutes = [
         path: 'share',
         name: '文献共享',
         component: () => import('@/views/share/share'),
-        meta: { title: '文献共享', icon: 'search' }
+        meta: { title: '文献共享', icon: 'search' },
+        hidden: true
       }
     ]
   },
@@ -138,7 +176,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'details',
-        name: '文献详情',
+        name: 'searchDetail',
         component: () => import('@/views/details/details'),
         meta: { title: '文献详情', icon: 'file' },
         hidden: true
@@ -153,7 +191,7 @@ export const constantRoutes = [
         path: 'filedetail',
         name: '文件夹详情',
         component: () => import('@/views/filedetail/filedetail'),
-        meta: { title: '文件夹详情', icon: 'file' },
+        meta: { title: '文件夹详情', icon: 'file', keepAlive: true },
         hidden: true
       }
     ]
@@ -164,7 +202,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'pdf',
-        name: 'pdf详情',
+        name: 'pdf',
         component: () => import('@/views/pdf/pdf'),
         meta: { title: '文献详情', icon: 'file' },
         hidden: true
@@ -197,8 +235,6 @@ export const constantRoutes = [
       }
     ]
   },
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({

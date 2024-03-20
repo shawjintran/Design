@@ -15,13 +15,13 @@
           <van-tabbar-item icon="user-o" @click="user">个人中心</van-tabbar-item>
         </van-tabbar>
       </div>
-<!--      <el-footer v-if="device!='mobile'">-->
-<!--        <el-row type="flex" justify="center">-->
-<!--          <el-link href="https://beian.miit.gov.cn/" target="_blank">蜀ICP备2022029000号-1</el-link>-->
-<!--          <span style="color: #606266; padding-left: 50px; font-size: 14px ">@2022-2023 Someone-->
-<!--        </span>-->
-<!--        </el-row>-->
-<!--      </el-footer>-->
+      <!--      <el-footer v-if="device!='mobile'">-->
+      <!--        <el-row type="flex" justify="center">-->
+      <!--          <el-link href="https://beian.miit.gov.cn/" target="_blank">蜀ICP备2022029000号-1</el-link>-->
+      <!--          <span style="color: #606266; padding-left: 50px; font-size: 14px ">@2022-2023 Someone-->
+      <!--        </span>-->
+      <!--        </el-row>-->
+      <!--      </el-footer>-->
     </div>
   </div>
 </template>
@@ -91,43 +91,43 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "~@/styles/mixin.scss";
-  @import "~@/styles/variables.scss";
+@import "~@/styles/mixin.scss";
+@import "~@/styles/variables.scss";
 
-  .app-wrapper {
-    @include clearfix;
-    position: relative;
-    height: 100%;
-    width: 100%;
-    &.mobile.openSidebar{
-      position: fixed;
-      top: 0;
-    }
-  }
-  .drawer-bg {
-    background: #000;
-    opacity: 0.3;
-    width: 100%;
-    top: 0;
-    height: 100%;
-    position: absolute;
-    z-index: 999;
-  }
-
-  .fixed-header {
+.app-wrapper {
+  @include clearfix;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  &.mobile.openSidebar{
     position: fixed;
     top: 0;
-    right: 0;
-    z-index: 9;
-    width: calc(100% - #{$sideBarWidth});
-    transition: width 0.28s;
   }
+}
+.drawer-bg {
+  background: #000;
+  opacity: 0.3;
+  width: 100%;
+  top: 0;
+  height: 100%;
+  position: absolute;
+  z-index: 999;
+}
 
-  .hideSidebar .fixed-header {
-    width: calc(100% - 54px)
-  }
+.fixed-header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 9;
+  width: calc(100% - #{$sideBarWidth});
+  transition: width 0.28s;
+}
 
-  .mobile .fixed-header {
-    width: 100%;
-  }
+.hideSidebar .fixed-header {
+  width: calc(100% - 54px)
+}
+
+.mobile .fixed-header {
+  width: 100%;
+}
 </style>

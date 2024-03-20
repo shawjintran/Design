@@ -11,7 +11,14 @@
       :key="item.docId"
       :label="item.name"
       :value="item.docId"
-    />
+    >
+      <div style="display:inline-block;float: left;width: 150px;text-overflow: ellipsis;overflow:hidden">{{ item.name }}</div>
+      <span style="float: right; color: #8492a6; font-size: 13px;margin-left: 10px">ID {{ item.docId }}</span>
+      <span style="float: right;">
+          <el-tag type="success" size="small" v-if="item.auth==0">个人</el-tag>
+          <el-tag type="danger" size="small" v-else>共享</el-tag>
+        </span>
+    </el-option>
   </el-select>
   <div style="font-weight: bolder;margin-bottom:3px">3.上传Excel文件</div>
   <el-upload
@@ -32,10 +39,23 @@
   >
     <!--                    <i class="el-icon-upload"></i>-->
     <!--                    <div class="el-upload__text">上传Excel文件</div>-->
-    <el-button size="small" type="primary" plain>选择文献</el-button>
+    <el-button slot="trigger" size="small" type="primary" plain>选取文件</el-button>
+    &nbsp
     <el-button size="small" type="warning" plain>上传解析</el-button>
-    <div slot="tip" class="el-upload__tip">只上传Excel文件</div>
-  </el-upload><br>
+    <div slot="tip" class="el-upload__tip">上传Excel文件后,请等待系统返回解析文件</div>
+  </el-upload>
+  <div v-if="excelResolve.length!=null&&excelResolve.length>0">
+    <ul class="el-upload-list el-upload-list--text">
+      <li v-for="f of excelResolve " :key="f.name" class="el-upload-list__item">
+        <a class="el-upload-list__item-name">
+          <i class="el-icon-document"></i>{{f.name}}
+        </a>
+        <label class="icon-label" @click="downloadExcel(f)">
+          <i class="el-icon-download"></i>
+        </label>
+      </li>
+    </ul>
+  </div>
 </div>
 </template>
 
@@ -45,11 +65,19 @@ export default {
   data(){
     return{
       childCom:'MPdf',
-      excelFile:''
+      docData:[],
+      excelFile:'',
+      excelResolve:[
+        {
+          name: 'url.jpeg',
+          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+        }],
     }
   },
   methods:{
+    downloadExcel(excel){
 
+    },
     excelChange(file, fileList){
       this.excelFile=fileList
     },
@@ -63,6 +91,10 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.icon-label{
+  position: absolute;
+  right: 5px;
+  top: 0;
+}
 </style>

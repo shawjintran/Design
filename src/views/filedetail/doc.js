@@ -32,7 +32,7 @@ export default {
       data: chapter
     })
   },
-  getDocUsers(docId){
+  getDocUsers(uid,docId){
     return request({
       url: `group/docUsers`,
       method: 'get',

@@ -172,8 +172,12 @@ export default {
 }
 </script>
 
-<style>
-/* bizImg图片大小 */
-
+<style lang="scss" scoped>
+@media screen and (max-width: 767px) {
+  ::v-deep .el-dialog{
+    width: 90%;
+    margin-bottom: 15px;
+  }
+}
 </style>
 

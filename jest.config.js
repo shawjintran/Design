@@ -15,7 +15,7 @@ module.exports = {
   ],
   collectCoverageFrom: ['src/utils/**/*.{js,vue}', '!src/utils/auth.js', '!src/utils/request.js', 'src/components/**/*.{js,vue}'],
   coverageDirectory: '<rootDir>/tests/unit/coverage',
-  // coverageReporters: ['html', 'text-summary'],
+  // 'collectCoverage': true,
   'coverageReporters': [
     'lcov',
     'text-summary'

@@ -39,7 +39,7 @@
             <el-col :xs={offset:1,span:33-11}>
               <van-tabs active="a" color="#c35c0f">
                 <van-tab title="登 录" name="a">
-                  <van-form @submit="onLogin">
+                  <van-form @submit="handleLogin" ref='loginForm'>
                     <van-cell-group >
                       <van-divider style="opacity: 0"></van-divider>
                       <van-field
@@ -49,36 +49,43 @@
                         left-icon="manager-o"
                         required
                         placeholder="手机号"
-                        :rules="[{ required: true, message: '请填写用户名' }]"
+                        :rules="[{ required: true, message: '请正确填写手机号',validator:userPhoneValidate }]"
                         style="margin: 5px 5px 5px 0px;"
                       />
                       <van-divider style="opacity: 0"></van-divider>
                       <van-field
                         v-model="loginForm.passWord"
-                        type="password"
+                        :type="passWordType"
                         name="password"
                         left-icon="label-o"
                         required
                         placeholder="密码"
-                        :rules="[{ required: true, message: '请填写密码' }]"
+                        :rules="[{ required: true, message: '用户密码最低6位',validator:passWordValidate}]"
                         style="margin: 5px 5px 5px 0px;"
-                      />
+                      >
+                        <template slot="right-icon">
+                          <span  @click="switchPasswordType">
+                               <van-icon name="eye-o" v-if="passWordType=='password'"/>
+                               <van-icon name="closed-eye" v-else />
+                          </span>
+                        </template>
+                      </van-field>
+
                     </van-cell-group>
                     <span style="opacity: 0">.</span>
-                    <el-checkbox v-model="loginForm.checkbox">
+                    <el-checkbox v-model="checkbox">
                       我已阅读并同意
                       <el-button type="text"  @click="showDialog"> 服务协议 </el-button>
                     </el-checkbox>
-                    <!--                  <van-divider style="opacity: 0"></van-divider>-->
                     <div style="margin: 16px;">
-                      <van-button round block type="primary" native-type="submit" plain>
+                      <van-button round block type="primary" native-type="submit" plain :loading="loading">
                         登 录
                       </van-button>
                     </div>
                   </van-form>
                 </van-tab>
                 <van-tab title="注 册 / 更 改 密 码" name="b">
-                  <van-form @submit="onSubmit">
+                  <van-form @submit="handleRegister" ref="registerForm">
                     <van-divider style="opacity: 0"></van-divider>
                     <van-field
                       v-model="registerForm.userPhone"
@@ -87,7 +94,7 @@
                       label="手机号"
                       placeholder="请输入"
                       required
-                      :rules="[{ required: true }]"
+                      :rules="[{ required: true, message: '请正确填写手机号',validator:userPhoneValidate }]"
                       style="margin: 5px 5px 5px 0px;"
                     />
                     <van-divider style="opacity: 0"></van-divider>
@@ -98,24 +105,31 @@
                       label="验证码"
                       required
                       placeholder="请输入"
-                      :rules="[{ required: true}]"
+                      :rules="[{ required: true,message: '请注意验证码格式',validator:codeValidate}]"
                       style="margin: 5px 5px 5px 0px;"
                     >
                       <template #button>
-                        <van-button size="small" type="info">发送验证码</van-button>
+                        <van-button native-type="button" size="small" type="info" @click="sendCode">发送验证码</van-button>
                       </template>
                     </van-field>
                     <van-divider style="opacity: 0"></van-divider>
                     <van-field
                       v-model="registerForm.passWord"
-                      type="password"
+                      :type="RpassWordType"
                       name="password"
                       required
                       label="密码 / 新密码"
                       placeholder="请输入"
-                      :rules="[{ required: true }]"
+                      :rules="[{ required: true, message: '用户密码最低6位',validator:passWordValidate}]"
                       style="margin: 5px 5px 5px 0px;"
-                    />
+                    >
+                      <template slot="right-icon">
+                          <span  @click="switchRPasswordType">
+                               <van-icon name="eye-o" v-if="RpassWordType=='password'"/>
+                               <van-icon name="closed-eye" v-else />
+                          </span>
+                      </template>
+                    </van-field>
                     <div style="margin: 16px;">
                       <van-button round block plain type="warning" native-type="submit">注 册/更 改</van-button>
                     </div>
@@ -136,6 +150,7 @@
 <!--      </el-col>-->
 <!--    </el-row>-->
 <!--    <el-divider></el-divider>-->
+
     <van-dialog v-model="showService" @confirm="dialogClose" @close="dialogClose">
       <el-row>
         <el-col :offset="1" :span="33-11">
@@ -154,46 +169,96 @@
 </template>
 
 <script>
+import {Message, MessageBox} from "element-ui";
+
 export default {
   name: "phone",
   data(){
     return{
+      passWordType: 'password',//输入框类型
+      RpassWordType: 'password',//输入框类型
       loginForm: {
         userPhone:"18398511880",
-        passWord: "1111",
-        checkbox:"",
+        passWord: "111111",
       },
+      checkbox:false,
       registerForm:{
         userPhone:"",
         code:"",
         passWord: "",
       },
       showService:false,
-      loginRules: {
-        userPhone: [{ required: true, message: "请输入手机号", trigger: "blur" }],
-        passWord: [{ required: true, message: "请输入密码", trigger: "blur" }],
+      loading: false,
+      redirect: undefined
+    }
+  },
+  watch: {
+    $route: {
+      handler: function(route) {
+        this.redirect = route.query && route.query.redirect
       },
+      immediate: true
     }
   },
   methods: {
-    submitForm() {
-      const userAccount = this.loginForm.account;
-      const userPassword = this.loginForm.passWord;
-      if (!userAccount) {
-        return this.$message({
-          type: "error",
-          message: "账号不能为空！",
-        });
+    switchPasswordType() {
+      this.passWordType = this.passWordType == 'password' ? 'text' : 'password'
+    },
+    switchRPasswordType() {
+      this.RpassWordType = this.RpassWordType == 'password' ? 'text' : 'password'
+    },
+    userPhoneValidate(val){
+      let a=/^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(val);
+      console.log(a)
+      return a
+    },
+    passWordValidate(val){
+      if(val.length<6)
+        return false;
+      return true;
+    },
+    codeValidate(val){
+      if(val.length!=4)
+        return false;
+      return true;
+    },
+    handleLogin() {
+      if (this.checkbox == false) {
+        console.log("未选择")
+        this.$message(
+          {
+            message:'请同意服务条款',
+            type:"warning"
+          })
+        return;
       }
-      if (!userPassword) {
-        return this.$message({
-          type: "error",
-          message: "密码不能为空！",
-        });
-      }
-      console.log("用户输入的账号为：", userAccount);
-      console.log("用户输入的密码为：", userPassword);
-
+      this.$refs.loginForm.validate().then(() => {
+          this.loading = true
+          this.$store.dispatch('user/login', this.loginForm).then(() => {
+            this.$router.push({path: '/'})
+            this.loading = false
+          }).catch(() => {
+            this.loading = false
+          })
+      }).catch(() => {
+        console.log('error submit!!')
+        return false
+      })
+    },
+    sendCode(){
+      console.log("验证码")
+      this.$message({
+        message:"【文献系统】您的验证码为"+"1111",
+        type: "info"
+      })
+    },
+    handleRegister(){
+      this.$refs.registerForm.validate().then(() => {
+        console.log("注册")
+      }).catch(() => {
+        console.log('error register')
+        return false
+      })
     },
     showDialog(){
       this.showService=true
@@ -210,6 +275,7 @@ export default {
 .container{
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
   padding-bottom: 0px;
   overflow-x: hidden;
 }
@@ -220,6 +286,7 @@ export default {
   box-shadow: -10px -10px 10px -10px rgba(0,0,0,0.56),10px -10px 10px -10px rgba(0,0,0,0.56);
   margin-right: 30px;
   width: 55%;
+  max-width: 685px;
 }
 @media screen and (max-width: 767px) {
   .login {
