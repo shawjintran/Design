@@ -100,6 +100,10 @@
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
+
+            <el-tab-pane label="收藏文献集" name="third" style="min-height: 400px">
+              <likesDoc></likesDoc>
+            </el-tab-pane>
           </el-tabs>
         </el-row>
 
@@ -130,7 +134,7 @@
               </el-form-item>
               <el-form-item label="权限">
                 <el-radio v-model="editData.docAuth" :label=1>共享</el-radio>
-                <el-radio v-model="editData.docAuth" :label=0>私有</el-radio>
+                <el-radio v-model="editData.docAuth" :label=0>个人</el-radio>
               </el-form-item>
             </el-form>
           </template>
@@ -152,7 +156,7 @@
               </el-form-item>
               <el-form-item label="权限">
                 <el-radio  v-model="editData.docAuth" :label=1>共享</el-radio>
-                <el-radio  v-model="editData.docAuth" :label=0>私有</el-radio>
+                <el-radio  v-model="editData.docAuth" :label=0>个人</el-radio>
               </el-form-item>
             </el-form>
           </template>
@@ -173,10 +177,12 @@
 import axios from 'axios'
 import tableAdd from "@/views/file/tableAdd";
 import tableManage from "@/views/file/tableManage";
+import likesDoc from "@/views/filedetail/likesDoc";
 export default {
   components:{
     tableAdd:tableAdd,
-    tableManage:tableManage
+    tableManage:tableManage,
+    likesDoc:likesDoc
   },
   data() {
     return {
@@ -195,13 +201,13 @@ export default {
       selfDocs: [
         {
           docId:1,
-          name:'你有这么高速运转的机器进入中国，记住我给出的原理',
+          name:'文献检索',
           size:4,
           auth:0
         },
         {
           docId:2,
-          name:'xxx',
+          name:'Elasticsearch',
           size:5,
           auth:0
         },
@@ -222,14 +228,14 @@ export default {
       ],
       manageDocs:[
         {
-        docId:1,
-        name:'你有这么高速运转的机器进入中国，记住我给出的原理',
-        size:4,
-        auth:1
+          docId:1,
+          name:'神经学',
+          size:4,
+          auth:1
         },
         {
           docId:2,
-          name:'xxx',
+          name:'计算机安全',
           size:5,
           auth:1
         },

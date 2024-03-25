@@ -2,12 +2,12 @@
   <el-row>
     <el-col style="max-height: 300px;overflow-y: scroll">
       <div v-for="(xdoc,index) of tableData" :key="index" class="docDiv" @click="toDetail(xdoc)">
-        <i class="el-icon-document-checked docIcon"></i>
+        <i class="el-icon-notebook-1 docIcon"></i>
         <div style="width: 100%;display: flex;justify-content: space-between;align-items: flex-end;">
           <div style="display: inline-block" class="docWord" >
             <span class="docName docName-wrap">{{xdoc.name}}</span>
             <div>
-              <span class="docSize">No.{{xdoc.docId}}&nbsp|&nbsp</span>
+              <span class="docSize">ID.{{xdoc.docId}}&nbsp|&nbsp</span>
               <span class="docSize">共&nbsp{{xdoc.size}}&nbsp篇文档</span>
             </div>
           </div>

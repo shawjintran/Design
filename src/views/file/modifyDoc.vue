@@ -42,7 +42,8 @@
                       <el-descriptions-item label="UID">{{findUser.id}}</el-descriptions-item>
                       <el-descriptions-item label="手机号">{{findUser.phone}}</el-descriptions-item>
                       <el-descriptions-item label="操作">
-                        <el-button size="medium" @click="addUser" type="primary" >添加</el-button>
+                        <el-button size="small" v-if="findUser.jointStatus==null" @click="addUser" type="primary" >添加</el-button>
+                        <el-button size="small" v-else @click="addUser" type="danger" >删除</el-button>
                       </el-descriptions-item>
                     </el-descriptions>
                 </el-row>
@@ -77,7 +78,7 @@
                 width="55"
               />
               <el-table-column prop="id" label="UID" show-overflow-tooltip min-width="65" sortable></el-table-column>
-              <el-table-column prop="auth" label="权限" min-width="55">
+              <el-table-column prop="auth" label="权限" min-width="60">
                 <template slot-scope="scope">
                   <el-tag size="small" v-if="scope.row.auth==1" type="info">用户</el-tag>
                   <el-tag size="small" v-if="scope.row.auth==2" >管理员</el-tag>

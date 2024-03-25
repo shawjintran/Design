@@ -1,6 +1,11 @@
 <template>
   <div>
-    <div style="font-size:20px;font-weight: bolder;margin-bottom: 10px">最近上传文献</div>
+    <div style="margin-bottom: 10px;display: flex; align-items: center">
+      <span style="font-size:20px;font-weight: bolder;">最近已完成文献</span>
+      <span style="margin-left: 20px">
+        <el-button round size="small">查看全部</el-button>
+      </span>
+    </div>
     <!-- 表格显示最近上传文件 展示pdfTitle pdfTitle-->
     <el-table
       :data="files"
@@ -29,25 +34,11 @@
             已完成
           </el-tag>
           <el-tag
-            v-else-if="scope.row.pdfStatus === 0"
-            effect="light"
-            type="warning"
-          >
-            分析中
-          </el-tag>
-          <el-tag
-            v-else-if="scope.row.pdfStatus === 2"
+            v-else
             effect="light"
             type="danger"
           >
-            异常
-          </el-tag>
-          <el-tag
-            v-else-if="scope.row.pdfStatus === 3"
-            effect="light"
-            type="warning"
-          >
-            审核中
+            错误
           </el-tag>
         </template>
       </el-table-column>
@@ -55,8 +46,51 @@
   </div>
 </template>
 <script>
+import sortfile from "@/api/sortfile";
+
 export default {
-  name: "uploadrecent"
+  name: "uploadrecent",
+  data() {
+    return {
+      files: [
+        {
+          pdfId: '1',
+          pdfTitle: '慢性阻塞性肺疾病患者自我管理水平及影响因素研究',
+          pdfStatus: 1,
+        },{
+          pdfId: '1',
+          pdfTitle: '视频监控系统的设计视频监控系统的设计',
+          pdfStatus: 1,
+        },{
+          pdfId: '1',
+          pdfTitle: 'PDF内容提取系统设计与实现',
+          pdfStatus: 1,
+        },{
+          pdfId: '1',
+          pdfTitle: '基于Elasticsearch的知识库检索引擎系统设计与实现',
+          pdfStatus: 1,
+        },{
+          pdfId: '1',
+          pdfTitle: '自动著录技术在户籍档案数字化中的应用研究与实践',
+          pdfStatus: 1,
+        },
+      ],
+      userId: '3',
+    }
+  },
+  mounted() {
+    this.fetchSortFiles(this.userId, 1)
+  },
+  methods:{
+    fetchSortFiles(userId, status) {
+      sortfile.fetchById(userId, status).then(response => {
+        if (response.code === 200) {
+          const arr = JSON.parse(JSON.stringify(response.data))
+          this.files = arr.data
+        }
+      })
+    },
+  }
 }
 </script>
 

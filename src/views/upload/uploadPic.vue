@@ -123,6 +123,9 @@ export default {
 ::v-deep .el-upload-list{
   display: none;
 }
+::v-deep .el-dialog{
+  margin-bottom: 30px;
+}
 @media screen and (max-width: 767px) {
   ::v-deep .el-dialog{
     width: 95%;

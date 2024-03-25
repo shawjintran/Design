@@ -115,7 +115,7 @@ export const constantRoutes = [
         path: 'file',
         name: '归档',
         component: () => import('@/views/file/file'),
-        meta: { title: '文献归档', icon: 'file' , keepAlive:true}
+        meta: { title: '文献集', icon: 'file' , keepAlive:true}
       }
     ]
   },
@@ -139,7 +139,7 @@ export const constantRoutes = [
       {
         path: 'chart',
         name: '分析',
-        component: () => import('@/views/chart/chart'),
+        component: () => import('@/views/summary/sumfile'),
         meta: { title: '文献分析', icon: 'chart' }
       }
     ]
@@ -217,7 +217,7 @@ export const constantRoutes = [
         path: 'user',
         name: '用户详情',
         component: () => import('@/views/user/user'),
-        meta: { title: '用户详情', icon: 'user' },
+        meta: { title: '个人中心', icon: 'user' },
         hidden: true
       }
     ]
@@ -230,7 +230,7 @@ export const constantRoutes = [
         path: 'buy',
         name: '积分购买',
         component: () => import('@/views/buy/buy'),
-        meta: { title: '积分购买', icon: 'user' },
+        meta: { title: '套餐购买', icon: 'user' },
         hidden: true
       }
     ]

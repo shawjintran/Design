@@ -46,31 +46,37 @@
                   </el-button>
 
                 </el-row>
-                <el-divider />
-                <el-row  >
-                 <el-button type="text" @click="order" class="text-button">
+                <van-divider class="info-separate" />
+                <el-row @click.native="order" >
+                 <el-button type="text" class="text-button">
                    我的订单
                  </el-button>
                 </el-row>
-                <el-divider />
+                <van-divider class="info-separate" />
+                <el-row @click.native="upload" >
+                 <el-button type="text" class="text-button">
+                   我的上传
+                 </el-button>
+                </el-row>
+                <van-divider class="info-separate" />
                 <el-row>
                   <el-button type="text" class="text-button">
-                    <router-link to="/buy/buy">购买积分</router-link>
+                    <router-link to="/buy/buy">套餐购买</router-link>
                   </el-button>
                 </el-row>
-                <el-divider />
+                <van-divider class="info-separate" />
                 <el-row>
                   <el-button  type="text" @click="showCancel=true;phone=userInfo.userPhone" class="text-button">
                     注销账号
                   </el-button>
                 </el-row>
-                <el-divider />
+                <van-divider class="info-separate" />
                 <el-row>
                   <el-button  type="text" @click="logout" class="text-button">
                     退出登录
                   </el-button>
                 </el-row>
-                <el-divider />
+                <el-divider class="info-separate" />
               </el-row>
               <el-row v-if="userUpdate==true">
                 <user-modify :user-info="userInfo" @toInfo="toInfo"></user-modify>
@@ -193,8 +199,7 @@ export default {
 .clock{
   /*background-color: #005dba;*/
   border-radius: 10px;
-  padding: 10px;
-  padding-top: 30px;
+  padding: 30px 10px 10px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 }
 .all{
@@ -205,11 +210,15 @@ export default {
   margin-right: 30px;
   width: 20%;
 }
-
+.info-separate{
+  border-color: #c4cacb;
+  margin: 10px 0;
+}
 .text-button{
-  color: #5a758f;
+  color: #6891b8;
   font-size: 19px;
   font-weight: bold;
+  margin-left: 15px;
 }
 ::v-deep .el-dialog{
   width: 30%;

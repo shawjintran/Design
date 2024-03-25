@@ -10,35 +10,6 @@
         <h2>文献上传</h2>
 <!--        Todo：DOI文献解析-->
         <div class="content">
-          <!-- 上传 https://jsonplaceholder.typicode.com/posts/-->
-          <!-- 点击上传后，将文件上传到服务器，服务器返回文件名，再将文件名pdfTitle和userId传回后端，后端返回pdfId,再将pdfId和userId返回后端 -->
-
-<!--          <el-upload-->
-<!--            class="upload-demo"-->
-<!--            action="http://localhost:8081/file/temp"-->
-<!--            accept=".pdf"-->
-<!--            :on-preview="handlePreview"-->
-<!--            :on-remove="handleRemove"-->
-<!--            :before-remove="beforeRemove"-->
-<!--            :on-error="handleAvatarError"-->
-<!--            :on-success="handleAvatarSuccess"-->
-<!--            :get-messages="getMessages"-->
-<!--            multiple-->
-<!--            :limit="50"-->
-<!--            :on-exceed="handleExceed"-->
-<!--            :file-list="fileList"-->
-<!--          >-->
-<!--            <el-button size="small" type="primary" plain>上传文献</el-button>-->
-<!--            <div slot="tip" class="el-upload__tip">可批量上传PDF文件(限50个)</div>-->
-<!--          </el-upload>-->
-<!--          <el-button type="primary" plain size="medium" @click="handleForm">-->
-<!--&lt;!&ndash;            <router-link to="/upload/form">上传文献</router-link>&ndash;&gt;-->
-<!--              上传文献-->
-<!--          </el-button>-->
-<!--          <el-button type="primary" plain size="medium" @click="handleRecent">-->
-<!--&lt;!&ndash;            <router-link to="/upload/form">上传文献</router-link>&ndash;&gt;-->
-<!--              bian-->
-<!--          </el-button>-->
           <div class="coll">
             <el-collapse>
               <el-collapse-item>
@@ -65,50 +36,9 @@
             <i class="el-icon-upload" />
           </el-divider>
 
-<!--          <el-button-->
-<!--            type="primary"-->
-<!--            size="small"-->
-<!--            plain-->
-<!--            style="margin-top: 20px"-->
-<!--            :disabled="isDisabled"-->
-<!--            @click="handleIdentify"-->
-<!--          >识别分析</el-button>-->
-
-          <!-- <el-upload
-            class="upload-demo"
-            action="http://192.168.43.61:8081/file/temp"
-            accept=".pdf"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :before-remove="beforeRemove"
-            :on-error="handleAvatarError"
-            :on-success="handleAvatarSuccess"
-            multiple
-            :limit="50"
-            :on-exceed="handleExceed"
-            :file-list="fileList"
-          >
-            <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">可批量上传PDF文件(限50个)</div>
-          </el-upload>
-          <el-divider /> -->
 
           <van-divider style="opacity: 0"/>
           <recent></recent>
-<!--          <div>-->
-<!--            <component :is="this.show"></component>-->
-<!--          </div>-->
-          <!-- “识别”按钮 点击后变成disabled样式持续3秒，并弹出提示：正在识别中，请稍后，在7秒之后弹出提示：识别已完成 -->
-
-          <!-- <div v-for="(items,index) in this.files" :key="index">
-            <div>
-
-              <span class="title">{{items.pdfTitle}}</span>
-              <el-tag
-                effect="plain">
-                {{ items.pdfTitle}}
-              </el-tag>
-            </div> -->
           <van-divider style="opacity: 0"></van-divider>
         </div>
       </el-col>
@@ -162,25 +92,13 @@ export default {
       pdfId: '',
       file: '',
       formData: new FormData(),
-      files: []
     }
-  },
-  created() {
-    this.userId = 3
   },
   mounted() {
     // eslint-disable-next-line no-undef
     this.fetchSortFiles(this.userId, 1)
   },
   methods: {
-    fetchSortFiles(userId, status) {
-      sortfile.fetchById(userId, status).then(response => {
-        if (response.code === 200) {
-          const arr = JSON.parse(JSON.stringify(response.data))
-          this.files = arr.data
-        }
-      })
-    },
     handleAvatarSuccess(res, file, fileList) {
       this.fileList = fileList
       // 上传成功钩子函数
@@ -268,51 +186,7 @@ export default {
       //   })
       //   this.isDisabled = false
       // }, 4000)
-    },
-    handleUpload(){
-
     }
-    // 点击上传后，将文件上传到服务器，服务器返回文件名,再将文件名pdfTitle和userId传回后端，后端返回pdfId,再将pdfId和userId返回后端
-    /* getMessage() {
-      axios.post('http://192.168.43.61:8081/file/temp').then(
-        (res) => {
-          this.pdfTitle = res.data.data
-          console.log(res.data)
-          console.log(this.pdfTitle)
-          console.log(res)
-        },
-        (err) => {
-          console.log(err)
-        }
-      )
-      axios
-        .post('http://192.168.43.61:8081/file/upload', {
-          pdfTitle: this.pdfTitle,
-          userId: this.userId
-        })
-        .then(
-          (res) => {
-            this.pdfId = res.data.data.pdfId
-            console.log(res)
-          },
-          (err) => {
-            console.log(err)
-          }
-        )
-      axios.get('http://192.168.43.61:8081/file/analyze/structure', {
-        params: {
-          pdfId: this.pdfId,
-          userId: this.userId
-        }
-      }).then(
-        (res) => {
-          console.log(res)
-        },
-        (err) => {
-          console.log(err)
-        }
-      )
-    } */
   }
 }
 </script>
