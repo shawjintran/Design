@@ -2,7 +2,6 @@
  * @param {string} url
  * @returns {Object}
  */
-// module.exports = {}
 function param2Obj(url) {
   const search = decodeURIComponent(url.split('?')[1]).replace(/\+/g, ' ')
   if (!search) {

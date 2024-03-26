@@ -1,63 +1,66 @@
 <template>
-  <div id="app">
-    <div class="user-profile">
-      <el-row class="tac">
-        <el-col :span="1">
-          <div><p style="color:white;">.</p></div>
-        </el-col>
+  <div>
+    <div>
+      <el-row>
         <!-- 页面主题内容 -->
-        <el-col :span="22">
-          <h2>购买积分</h2>
+        <el-col :offset="1" :span="22">
+          <div style="margin-top: 10px;color: #9298a5" @click="goBack">
+            <i class="el-icon-arrow-left" style="margin-right: 10px"></i>返回
+          </div>
+          <h2>积分购买</h2>
           <el-divider />
           <span>请点击商品进行购买</span>
           <div class="content" style="color:white;">.</div>
-          <div v-if="pages.length!==0" v-for="(page, index) of pages" :key="index" >
-            <el-col :span="6" :xs="12" v-for="(item, innerindex) of page" :key="item.bizId" style="align-items: center">
-              <el-card :body-style="{ padding: '0px', height:'30%'}" shadow="hover" style="border-color: #dfdfdf ;width: 90%;height: 90%; margin-bottom: 15px;background-color: #e0f0fb"
+          <div v-for="(page, index) of pages" :key="index" >
+            <el-col :span="6" :xs="24" v-for="(item, innerindex) of page" :key="item.bizId" style="align-items: center">
+              <el-card :body-style="{ padding: '0px', height:'30%'}" shadow="hover" style="width: 90%;height: 90%;color: rgb(114 114 175); margin-bottom: 15px;background-color: rgb(232 242 255)"
               @click.native="handleRowClick(item.bizId)"
               >
-                <div style="padding: 10px 10px;">
-                  <div>
-                    <div style="font-size: 20px; font-weight:bolder; margin: 10px 10px">套餐 {{innerindex+1}}</div>
-                  </div>
-                  <div style="font-size: 20px;font-weight:bolder; margin-left: 10px">
+                <div style="display:flex;justify-content: space-between;">
+                  <div style="padding: 10px 10px;display: inline-block">
+                    <div>
+                      <div style="font-size: 20px; font-weight:bolder; margin: 10px 10px">套餐 {{innerindex+1}}</div>
+                    </div>
+                    <div style="font-size: 20px;font-weight:bolder; margin-left: 10px">
                       <i class="el-icon-coin"></i>
                       {{item.bizPoint}} 积分
+                    </div>
+                    <div style="font-size: 18px;font-weight:bold;margin-left: 10px">
+                      <i class="el-icon-money"></i>
+                      <span style="margin-left: 3px">
+                      {{item.bizPrice}} 元
+                    </span>
+                    </div>
                   </div>
-                  <div style="font-size: 18px;font-weight:bold;margin-left: 13px">
-                    <i class="el-icon-money"></i>
-                    {{item.bizPrice}} 元
+                  <div style="display:inline-block; height: 100%;width: 20%">
+                    <i class="el-icon-s-flag" style="color: rgb(243 222 32);font-size: 40px;position:relative;right: -15px;top:10px"></i>
                   </div>
                 </div>
+
               </el-card>
             </el-col>
-          </div>
-          <div v-if="pages.length===0">
-            <el-empty :image-size="200" description="请联网后重试"></el-empty>
           </div>
           <!-- 点击表格中的某一行，弹窗显示购买窗口 后端传回的图片流 弹窗显示后端传回的图片流并显示 -->
           <el-dialog
             title="支付订单"
             :visible.sync="orderVisible"
-            width="70%"
           >
             <template slot="title">
               <span>支付订单</span>
             </template>
-            <template  >
-              <img :src="bizImg" alt="" style="width: 100%; height: 100%;">
+            <template slot="default">
+              <el-image :src="bizImg" style="max-width: 100%; height: 100%;min-width: 300px;min-height: 50px">
+              </el-image>
             </template>
-            <template #footer>
+            <template slot="footer">
               <span slot="footer" class="dialog-footer">
-                <el-button  @click="orderVisible = false">取消支付</el-button>
+                <el-button  @click="orderVisible = false">支 付 取 消</el-button>
               </span>
             </template>
           </el-dialog>
           <el-dialog
             title="创建订单"
-            :visible.sync="dialogVisible"
-            width="70%"
-          >
+            :visible.sync="dialogVisible">
             <template >
               <div>即将生成订单，请确认是否需要购买</div>
             </template>
@@ -77,10 +80,24 @@
 
 <script>
 import axios from 'axios'
+import request from "@/utils/request";
 export default {
   data() {
     return {
-      bizList: [],
+      bizList: [
+        {
+          bizId: '1',
+          bizName: '套餐一',
+          bizPoint: '100',
+          bizPrice: '10',
+        },
+        {
+          bizId: '2',
+          bizName: '套餐二',
+          bizPoint: '200',
+         bizPrice: '20',
+        }
+      ],
       currentPage: 1,
       pageSize: 5,
       total: 0,
@@ -110,6 +127,9 @@ export default {
     this.getBizList()
   },
   methods: {
+    goBack(){
+      this.$router.back()
+    },
     generateOrder() {
       this.userId = 3
       const url = 'http://192.168.43.61:8081/order/add'
@@ -137,7 +157,10 @@ export default {
         // 处理后端返回的图片流
       }).catch(error => {
         console.error(error)
+        this.$message.error('生成订单失败，请联系工作人员')
       })
+      this.dialogVisible = false
+      this.orderVisible = true
     },
     getBizList() {
       // /biz/list/{page}/{size}
@@ -176,8 +199,16 @@ export default {
 }
 </script>
 
-<style>
-/* bizImg图片大小 */
+<style lang="scss" scoped>
+::v-deep .el-dialog{
+  width: 50%;
+}
 
+@media screen and (max-width: 767px) {
+  ::v-deep .el-dialog{
+    width: 90%;
+    margin-bottom: 15px;
+  }
+}
 </style>
 

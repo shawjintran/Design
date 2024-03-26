@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      title: '医 寻',
+      title: '文 献',
       logo: require('@/assets/img.png')
     }
   }
