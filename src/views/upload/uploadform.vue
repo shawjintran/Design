@@ -72,7 +72,7 @@
                         :on-change="handleChange"
                         :on-error="handlePdfError"
                         :on-success="handlePdfSuccess"
-                        :limit="3"
+                        :limit="1"
                         :on-exceed="handleExceed"
                         :file-list="pdfFiles"
                         :auto-upload="false"

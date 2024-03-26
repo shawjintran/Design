@@ -53,12 +53,12 @@
                  </el-button>
                 </el-row>
                 <van-divider class="info-separate" />
-                <el-row @click.native="upload" >
-                 <el-button type="text" class="text-button">
-                   我的上传
-                 </el-button>
-                </el-row>
-                <van-divider class="info-separate" />
+<!--                <el-row @click.native="upload" >-->
+<!--                 <el-button type="text" class="text-button">-->
+<!--                   我的上传-->
+<!--                 </el-button>-->
+<!--                </el-row>-->
+<!--                <van-divider class="info-separate" />-->
                 <el-row>
                   <el-button type="text" class="text-button">
                     <router-link to="/buy/buy">套餐购买</router-link>

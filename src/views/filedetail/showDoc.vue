@@ -16,8 +16,7 @@
       <el-table
         ref="multipleTable"
         :data="tableData"
-        style="width: 100%;min-height: 300px"
-        :height="tableHeight"
+        style="width: 100%;min-height: 400px"
         @selection-change="handleSelectionChange"
         @row-click="rowclick"
       >

@@ -14,7 +14,7 @@
               <el-table
                 v-if="activeName ==='first'"
                 :data="selfDocs"
-                style="width: 100%;min-height: 300px"
+                style="width: 100%;min-height: 350px"
                 @row-click="hrow"
               >
                 <el-table-column

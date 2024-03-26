@@ -7,16 +7,22 @@
       <el-row>
         <div style="padding-top: 10px;width: 100%;display: flex;align-items: baseline;justify-content: space-between">
           <i class="el-icon-back" @click="goBack" style="font-size: 24px;"></i>
-          <el-tooltip placement="top">
+          <el-tooltip placement="top" >
             <div slot="content">{{this.pdf.pdfTitle}}</div>
             <span class="pdfname">
               &nbsp{{this.pdf.pdfTitle}}
             </span>
           </el-tooltip>
-          <i class="el-icon-download" style="float:right;font-size: 20px;color: #97a8be"></i>
+          <span>
+            <i class="el-icon-star-off" v-if="pdf.isLike==false" @click="liking"  style="float:right;font-size: 20px;color: #97a8be"></i>
+            <i class="el-icon-star-on" v-else  @click="notLike" style="float:right;font-size: 20px;color: #fae057"></i>
+            <i class="el-icon-download" style="float:right;font-size: 20px;color: #97a8be"></i>
+          </span>
+
         </div>
       </el-row>
       <el-row>
+
         <van-divider style="opacity: 0"></van-divider>
         <el-card>
           <el-empty v-if="imageList==null||imageList.length<1" description="暂无图像">
@@ -43,6 +49,7 @@ export default {
       pdf:{
         pdfId:0,
         pdfTitle: '',
+        isLike:false,
       },
       imageList: [],
     }
@@ -61,6 +68,14 @@ export default {
   methods: {
     goBack(){
       this.$router.back()
+    },
+    liking() {
+      this.pdf.isLike=true
+
+    },
+    notLike() {
+      this.pdf.isLike=false
+
     },
     // 通过axios获取图片列表
     getImageList() {

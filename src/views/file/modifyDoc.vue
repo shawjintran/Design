@@ -28,7 +28,7 @@
           <van-divider style="opacity: 0"></van-divider>
           <el-card v-if="docInfo.docAuth!=0">
 
-            <label>添加用户</label>
+            <label>搜索用户</label>
             <br/><br/>
             <el-row>
               <el-col :span="14" :xs="34-10">
