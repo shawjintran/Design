@@ -3,13 +3,14 @@
     <div style="margin-bottom: 10px;display: flex; align-items: center">
       <span style="font-size:20px;font-weight: bolder;">最近已完成文献</span>
       <span style="margin-left: 20px">
-        <el-button round size="small">查看全部</el-button>
+        <el-button round size="small" @click="tosum()">查看全部</el-button>
       </span>
     </div>
     <!-- 表格显示最近上传文件 展示pdfTitle pdfTitle-->
     <el-table
       :data="files"
       style="width: 100%"
+      v-if="this.$store.state.app.device==='mobile'"
     >
       <el-table-column
         prop="pdfTitle"
@@ -90,6 +91,9 @@ export default {
         }
       })
     },
+    tosum(){
+      this.$emit('tosum',1)
+    }
   }
 }
 </script>

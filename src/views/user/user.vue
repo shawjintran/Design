@@ -129,7 +129,7 @@ export default {
     return {
       userInfo: {
         userId: 1,
-        userPhone: '2134',
+        userPhone: '18398511880',
         userPoints: '11',
       },
       avatarSize:100,

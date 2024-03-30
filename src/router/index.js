@@ -65,7 +65,7 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/search',
+    redirect: '/search/search',
     children: [{
       path: 'search',
       name: '首页',
@@ -151,9 +151,9 @@ export const constantRoutes = [
     children: [
       {
         path: 'chart',
-        name: '分析',
+        name: '文献进程',
         component: () => import('@/views/summary/sumfile'),
-        meta: { title: '文献分析', icon: 'chart' }
+        meta: { title: '文献进程', icon: 'chart' }
       }
     ]
   },

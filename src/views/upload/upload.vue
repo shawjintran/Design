@@ -38,7 +38,7 @@
 
 
           <van-divider style="opacity: 0"/>
-          <recent></recent>
+          <recent v-on="$listeners"></recent>
           <van-divider style="opacity: 0"></van-divider>
         </div>
       </el-col>
@@ -65,9 +65,9 @@ import uploadform from "@/views/upload/uploadform";
 import uploadmulti from "@/views/upload/uploadmulti";
 export default {
   components:{
-    'recent':uploadrecent,
-    'uploadform':uploadform,
-    'uploadmulti':uploadmulti
+    recent:uploadrecent,
+    uploadform:uploadform,
+    uploadmulti:uploadmulti
   },
   data() {
     return {

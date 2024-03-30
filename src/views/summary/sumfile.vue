@@ -140,7 +140,7 @@
           <template #default>
             <el-form :model="editData" label-position="top">
               <el-form-item label="文件名" required>
-                <el-input  v-model="editData.pdfTitle" style="width: 350px" />
+                <el-input  v-model="editData.pdfTitle" style="width: 330px" />
               </el-form-item>
               <el-form-item label="上传" required>
                 <el-upload
@@ -160,7 +160,7 @@
                   <el-button slot="trigger" size="small" type="primary" plain>选择文献</el-button>
                   <div slot="tip" class="el-upload__tip">只能上传pdf文件</div>
                   <div slot="tip" class="el-upload__tip">若通过解析上传，请先解析下载PDF文件后上传</div>
-                  <el-button style="margin-left: 10px" size="small" type="warning" plain @click="uploadFile(1)">保存添加</el-button>
+                  <el-button style="margin-left: 10px" size="small" type="warning" plain @click="uploadFile()">保存添加</el-button>
                 </el-upload>
                 <br/>
 
@@ -332,7 +332,7 @@ export default {
 
 <style lang="scss" scoped>
 ::v-deep .el-dialog{
-  width: 50%;
+  width: 30%;
   margin-bottom: 20px;
 }
 ::v-deep .el-form-item__content{

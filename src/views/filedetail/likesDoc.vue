@@ -53,35 +53,15 @@ export default {
       lineSize:4,
       likes: [
         {
-          pdfId:0,
-          pdfTitle:'汉堡',
-          url:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
+          pdfId:1,
+          pdfTitle:'参考文献引用',
+          url:'https://appwk.baidu.com/naapi/doc/view?ih=2033&o=png_6_0_0_0_0_817_1195_817.92_1195.92&iw=1390&ix=0&iy=0&aimw=1390&rn=1&doc_id=9cd280174a73f242336c1eb91a37f111f1850dbe&pn=1&sign=4c7c0f49e36139467b1dce7d0e923408&type=1&app_ver=2.9.8.2&ua=bd_800_800_IncredibleS_2.9.8.2_2.3.7&bid=1&app_ua=IncredibleS&uid=&cuid=&fr=3&Bdi_bear=WIFI&from=3_10000&bduss=&pid=1&screen=800_800&sys_ver=2.3.7',
         },
         {
           pdfId:4,
-          pdfTitle:'汉堡',
-          url:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-        },{
-          pdfId:1,
-          pdfTitle:'汉堡',
-          url:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-        },{
-          pdfId:3,
-          pdfTitle:'汉堡',
-          url:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-        },{
-          pdfId:5,
-          pdfTitle:'汉堡',
-          url:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-        },{
-          pdfId:6,
-          pdfTitle:'汉堡',
-          url:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-        },{
-          pdfId:14,
-          pdfTitle:'汉堡',
-          url:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-        },
+          pdfTitle:'微信文章',
+          url:'https://sns-webpic-qc.xhscdn.com/202403271123/9d60b22d4c98be91fe0b551ff44c1afd/1000g0082cs0og70gm00g5nvk9if0bm922r5nqj8!nd_dft_wlteh_webp_3',
+        }
       ],
     }
   },
@@ -136,6 +116,7 @@ export default {
 
 .image {
   width: 100%;
+  height:290px ;
   display: block;
 }
 

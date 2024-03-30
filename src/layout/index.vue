@@ -8,11 +8,11 @@
       </div>
       <app-main />
       <div v-if="device==='mobile'">
-        <van-tabbar  v-model="active">
-          <van-tabbar-item icon="search" @click="search">搜索文献</van-tabbar-item>
-          <van-tabbar-item icon="upgrade" @click="upload">上传文献</van-tabbar-item>
-          <van-tabbar-item icon="apps-o" @click="file">文献归档</van-tabbar-item>
-          <van-tabbar-item icon="user-o" @click="user">个人中心</van-tabbar-item>
+        <van-tabbar  route>
+          <van-tabbar-item icon="search" replace to="/search/search">文献检索</van-tabbar-item>
+          <van-tabbar-item icon="apps-o" replace to="/choose/choose">文献管理</van-tabbar-item>
+          <van-tabbar-item icon="debit-pay" replace to="/file/file">文献集</van-tabbar-item>
+          <van-tabbar-item icon="user-o" replace to="/user/user">个人中心</van-tabbar-item>
         </van-tabbar>
       </div>
       <!--      <el-footer v-if="device!='mobile'">-->
@@ -75,8 +75,8 @@ export default {
       this.$router.push({ path: '/search/search' })
     },
     // 跳转上传
-    upload() {
-      this.$router.push({ path: '/upload/upload' })
+    manage() {
+      this.$router.push({ path: '/choose/choose' })
     },
     // 跳转文献归档
     file() {
